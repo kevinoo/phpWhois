@@ -6,7 +6,7 @@
         "Whois",
         "phpWhois"
     ],
-    "homepage": "https://www.lucichkevin.it/phpWhois/",
+    "homepage": "https://github.com/kevinoo/phpWhois/",
     "type": "library",
     "license": "GPL-2.0-or-later",
     "authors": [
