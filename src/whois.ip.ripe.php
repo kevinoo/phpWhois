@@ -32,7 +32,9 @@ if (!defined('__RIPE_HANDLER__')) {
 class ripe_handler
 {
 
-    function parse($data_str, $query)
+    public $deepWhois = false;
+
+    public function parse($data_str, $query)
     {
         $translate = array(
             'fax-no' => 'fax',

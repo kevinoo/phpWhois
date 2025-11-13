@@ -32,7 +32,9 @@ require_once 'whois.parser.php';
 class joker_handler
 {
 
-    function parse($data_str, $query)
+    public $deepWhois = false;
+
+    public function parse($data_str, $query)
     {
         $translate = array(
             'contact-hdl' => 'handle',

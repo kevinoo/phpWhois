@@ -32,7 +32,9 @@ if (!defined('__MELBOURNEIT_HANDLER__')) {
 class melbourneit_handler
 {
 
-    function parse($data_str, $query)
+    public $deepWhois = false;
+
+    public function parse($data_str, $query)
     {
         $items = array(
             'Domain Name..........' => 'domain.name',

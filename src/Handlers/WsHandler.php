@@ -17,7 +17,7 @@ use phpWhois\WhoisClient;
 */
 class WsHandler extends WhoisClient
 {
-    function parse($data_str, $query)
+    public function parse($data_str, $query)
     {
         $items = [
             'Domain Name:'                            => 'domain.name',

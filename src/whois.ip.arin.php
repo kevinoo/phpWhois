@@ -34,7 +34,7 @@ class arin_handler
 	// FIXME. This is a temporary fix :-(
 	public $deepWhois = false;
 
-    function parse($data_str, $query)
+    public function parse($data_str, $query)
     {
         $items = array(
             'OrgName:' => 'owner.organization',

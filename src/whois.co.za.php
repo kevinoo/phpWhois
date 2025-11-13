@@ -32,7 +32,9 @@ require_once 'whois.parser.php';
 class co_Za_handler
 {
 
-    function parse($data_str, $query)
+    public $deepWhois = false;
+
+    public function parse($data_str, $query)
     {
         $items = array(
             '0a. lastupdate             :' => 'domain.changed',

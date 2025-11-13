@@ -15,7 +15,7 @@ use phpWhois\WhoisClient;
 
 class JpHandler extends WhoisClient
 {
-    function parse($data_str, $query)
+    public function parse($data_str, $query)
     {
         $items = array(
             '[State]' => 'domain.status',

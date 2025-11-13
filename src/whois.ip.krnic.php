@@ -32,7 +32,9 @@ require_once 'whois.parser.php';
 class krnic_handler
 {
 
-    function parse($data_str, $query)
+    public $deepWhois = false;
+
+    public function parse($data_str, $query)
     {
         $blocks = array(
             'owner1' => '[ Organization Information ]',
