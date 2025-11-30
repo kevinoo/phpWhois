@@ -225,7 +225,7 @@ class WhoisClient
             }
 
             if (array_key_exists($this->query['server'], $this->NON_UTF8)) {
-                $raw = utf8_encode($raw);
+                $raw = Utils::utf8Encode($raw);
             }
 
             $output = explode("\n", $raw);

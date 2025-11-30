@@ -162,4 +162,42 @@ class Utils extends Whois
 
         return str_replace("\n", "<br/>\n", $out);
     }
+
+    public static function utf8Encode($str): string
+    {
+        // PHP 7.2
+        if(PHP_VERSION_ID >= 70200 && PHP_VERSION_ID < 80000){
+            return utf8_encode($str);
+        }
+
+        // PHP >= 8.0 + ext-mbstring
+        if(function_exists('mb_convert_encoding')){
+            return mb_convert_encoding($str,'UTF-8','ISO-8859-1');
+        }
+
+        // PHP >= 8.0 + ext-iconv
+        if(function_exists('iconv')){
+            $converted = @iconv('ISO-8859-1','UTF-8',$str);
+            if ($converted !== false) {
+                return $converted;
+            }
+        }
+
+        // PHP >= 8.0 without "ext-mbstring" or "ext-iconv" - ugly, but better than nothing
+        return strtr($str, [
+            "\xE0" => "à", "\xE1" => "á", "\xE2" => "â", "\xE3" => "ã", "\xE4" => "ä", "\xE5" => "å",
+            "\xE8" => "è", "\xE9" => "é", "\xEA" => "ê", "\xEB" => "ë",
+            "\xEC" => "ì", "\xED" => "í", "\xEE" => "î", "\xEF" => "ï",
+            "\xF2" => "ò", "\xF3" => "ó", "\xF4" => "ô", "\xF5" => "õ", "\xF6" => "ö",
+            "\xF9" => "ù", "\xFA" => "ú", "\xFB" => "û", "\xFC" => "ü",
+            "\xC0" => "À", "\xC1" => "Á", "\xC2" => "Â", "\xC3" => "Ã", "\xC4" => "Ä", "\xC5" => "Å",
+            "\xC8" => "È", "\xC9" => "É", "\xCA" => "Ê", "\xCB" => "Ë",
+            "\xCC" => "Ì", "\xCD" => "Í", "\xCE" => "Î", "\xCF" => "Ï",
+            "\xD2" => "Ò", "\xD3" => "Ó", "\xD4" => "Ô", "\xD5" => "Õ", "\xD6" => "Ö",
+            "\xD9" => "Ù", "\xDA" => "Ú", "\xDB" => "Û", "\xDC" => "Ü",
+            "\xF1" => "ñ", "\xD1" => "Ñ",
+            "\xDF" => "ß",
+        ]);
+    }
+
 }
