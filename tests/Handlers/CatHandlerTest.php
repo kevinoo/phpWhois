@@ -22,7 +22,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\CatHandler;
+use phpWhois\Handlers\TLD\CatHandler;
 
 /**
  * CatHandlerTest

@@ -7,7 +7,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\AgHandler;
+use phpWhois\Handlers\TLD\AgHandler;
 
 /**
  * AgHandlerTest

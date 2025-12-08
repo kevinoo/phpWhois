@@ -7,7 +7,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\AmHandler;
+use phpWhois\Handlers\TLD\AmHandler;
 
 /**
  * AmHandlerTest

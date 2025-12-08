@@ -21,7 +21,7 @@
 
 namespace Tests\Handlers;
 
-use phpWhois\Handlers\CaHandler;
+use phpWhois\Handlers\TLD\CaHandler;
 
 /**
  * CaHandlerTest

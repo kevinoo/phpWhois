@@ -22,6 +22,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
+use phpWhois\Handlers\TLD\CoZaHandler;
 
 /**
  * CoZaHandlerTest
@@ -29,7 +30,7 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 class CoZaHandlerTest extends AbstractHandler
 {
     /**
-     * @var \co_Za_handler $handler
+     * @var CoZaHandler $handler
      */
     protected $handler;
 
@@ -40,7 +41,7 @@ class CoZaHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler            = new \co_Za_handler();
+        $this->handler            = new CoZaHandler();
         $this->handler->deepWhois = false;
     }
 

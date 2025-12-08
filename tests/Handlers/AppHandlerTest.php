@@ -8,7 +8,7 @@ namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use Exception;
-use phpWhois\Handlers\AppHandler;
+use phpWhois\Handlers\TLD\AppHandler;
 
 /**
  * AppHandlerTest

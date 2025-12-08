@@ -21,7 +21,7 @@
 
 namespace Tests\Handlers;
 
-use phpWhois\Handlers\LondonHandler;
+use phpWhois\Handlers\TLD\LondonHandler;
 
 /**
  * LondonHandlerTest

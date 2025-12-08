@@ -22,7 +22,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\EuHandler;
+use phpWhois\Handlers\TLD\EuHandler;
 
 /**
  * EuHandlerTest

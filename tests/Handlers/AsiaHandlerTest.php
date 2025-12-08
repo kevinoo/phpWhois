@@ -7,7 +7,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\AsiaHandler;
+use phpWhois\Handlers\TLD\AsiaHandler;
 
 /**
  * AsiaHandlerTest

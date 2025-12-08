@@ -7,7 +7,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\BeHandler;
+use phpWhois\Handlers\TLD\BeHandler;
 
 /**
  * BeHandlerTest

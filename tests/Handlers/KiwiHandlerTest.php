@@ -7,8 +7,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\KiwiHandler;
-use phpWhois\Whois;
+use phpWhois\Handlers\TLD\KiwiHandler;
 
 /**
  * KiwiHandlerTest

@@ -7,7 +7,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\DeHandler;
+use phpWhois\Handlers\TLD\DeHandler;
 
 /**
  * DeHandlerTest

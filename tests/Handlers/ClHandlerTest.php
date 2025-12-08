@@ -22,7 +22,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\ClHandler;
+use phpWhois\Handlers\TLD\ClHandler;
 
 /**
  * ClHandlerTest
