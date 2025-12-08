@@ -8,15 +8,9 @@
 namespace phpWhois\Handlers;
 
 /**
- * HandlerInterface
+ * HandlerInterface.
  */
 interface HandlerInterface
 {
-    /**
-     * @param array $data_str
-     * @param string $query
-     *
-     * @return array
-     */
     public function parse(array $data_str, string $query): array;
 }
