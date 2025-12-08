@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\CoopHandler;
+use phpWhois\Handlers\TLD\UkHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * CoopHandlerTest.
+ * UkHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class CoopHandlerTest extends AbstractHandler
+class UkHandlerTest extends AbstractHandler
 {
     /**
-     * @var CoopHandler
+     * @var UkHandler
      */
     protected $handler;
 
@@ -41,17 +42,16 @@ class CoopHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new CoopHandler();
+        $this->handler = new UkHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
-     * @throws \Exception
      */
-    public function parseSmileDotCoop(): void
+    public function parseVibrantDigitalFutureDotUk()
     {
-        $query = 'smile.coop';
+        $query = 'vibrantdigitalfuture.uk';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -63,27 +63,23 @@ class CoopHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'smile.coop',
-                'handle' => 'D7878757-CNIC',
-                'changed' => '2024-12-28',
-                'created' => '2001-07-10',
-                'expires' => '2026-01-30',
+                'created' => '2024-10-24',
+                'expires' => '2025-10-24',
+                'changed' => '2025-10-31',
             ],
-            'registered' => 'yes',
+            'registered' => 'no',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
     /**
      * @test
-     * @throws \Exception
      */
-    public function parseNicDotCoop(): void
+    public function parseGoogleDotCoDotUk()
     {
-        $query = 'nic.coop';
+        $query = 'google.co.uk';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -95,27 +91,24 @@ class CoopHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'nic.coop',
-                'handle' => 'DO_59f76c35d72c849fba8b632e12102b0d-COOP',
-                'changed' => '2024-02-26',
-                'created' => '2022-11-07',
-                'expires' => '2032-11-07',
+                // 'name'    => 'google.co.uk',
+                'created' => '1999-02-14',
+                'expires' => '2026-02-14',
+                'changed' => '2025-01-13',
             ],
             'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
     /**
      * @test
-     * @throws \Exception
      */
-    public function parseDomainsDotCoop(): void
+    public function parseOlsnsDotCoDotUk()
     {
-        $query = 'domains.coop';
+        $query = 'olsns.co.uk';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -127,17 +120,15 @@ class CoopHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'domains.coop',
-                'handle' => 'D7881481-CNIC',
-                'changed' => '2024-06-02',
-                'created' => '2002-07-09',
-                'expires' => '2029-07-09',
+                // 'name'    => 'olsns.co.uk',
+                'created' => '2001-02-21',
+                'expires' => '2026-02-21',
+                'changed' => '2025-02-19',
             ],
             'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

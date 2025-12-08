@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\NoHandler;
+use phpWhois\Handlers\TLD\DkHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * SeHandlerTest.
+ * DkHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class NoHandlerTest extends AbstractHandler
+class DkHandlerTest extends AbstractHandler
 {
     /**
-     * @var NoHandler
+     * @var DkHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class NoHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new NoHandler();
+        $this->handler = new DkHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotNo()
+    public function parseGoogleDotDk()
     {
-        $query = 'google.no';
+        $query = 'google.dk';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,38 +63,10 @@ class NoHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.no',
-                'created' => '2001-02-26',
-                'changed' => '2018-06-22',
-            ],
-            'registered' => 'yes',
-        ];
-
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
-    }
-
-    /**
-     * @test
-     */
-    public function parseNoridDotNo()
-    {
-        $query = 'norid.no';
-
-        $fixture = $this->loadFixture($query);
-        $data = [
-            'rawdata' => $fixture,
-            'regyinfo' => [],
-        ];
-
-        $actual = $this->handler->parse($data, $query);
-
-        $expected = [
-            'domain' => [
-                'name' => 'norid.no',
-                'created' => '1999-11-15',
-                'changed' => '2018-05-24',
+                'domain' => 'google.dk',
+                'registered' => '1999-01-10',
+                'expires' => '2019-03-31',
+                'status' => 'Active',
             ],
             'registered' => 'yes',
         ];

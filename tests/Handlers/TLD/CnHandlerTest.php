@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2018 Joshua Smith
+ * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\UsHandler;
+use phpWhois\Handlers\TLD\CnHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * UsHandlerTest.
+ * CnHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class UsHandlerTest extends AbstractHandler
+class CnHandlerTest extends AbstractHandler
 {
     /**
-     * @var UsHandler
+     * @var CnHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class UsHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new UsHandler();
+        $this->handler = new CnHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotUs()
+    public function parseGoogleDotCn()
     {
-        $query = 'google.us';
+        $query = 'google.cn';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,10 @@ class UsHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.us',
-                'changed' => '2025-03-22',
-                'created' => '2002-04-19',
-                'expires' => '2026-04-18',
+                'name' => 'google.cn',
+                // 'changed' => '2020-01-13',
+                'created' => '2003-03-17',
+                'expires' => '2026-03-17',
             ],
             'registered' => 'yes',
         ];
@@ -78,9 +79,9 @@ class UsHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseNeustarDotUs()
+    public function parseChinaDotCn()
     {
-        $query = 'neustar.us';
+        $query = 'china.cn';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -92,10 +93,10 @@ class UsHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'neustar.us',
-                'changed' => '2025-06-02',
-                'created' => '2002-04-18',
-                'expires' => '2026-04-17',
+                'name' => 'china.cn',
+                // 'changed' => '2020-08-03',
+                'created' => '2003-03-10',
+                'expires' => '2028-05-08',
             ],
             'registered' => 'yes',
         ];

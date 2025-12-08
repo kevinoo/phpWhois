@@ -16,23 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2018 Joshua Smith
+ * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
-use phpWhois\Handlers\TLD\PhHandler;
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
+use phpWhois\Handlers\TLD\EuHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * PhHandlerTest.
+ * EuHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class PhHandlerTest extends AbstractHandler
+class EuHandlerTest extends AbstractHandler
 {
     /**
-     * @var PhHandler
+     * @var EuHandler
      */
     protected $handler;
 
@@ -40,16 +42,16 @@ class PhHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new PhHandler();
+        $this->handler = new EuHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseCityEscapeDotPh()
+    public function parseGoogleDotEu()
     {
-        $query = 'cityescape.ph';
+        $query = 'google.eu';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -59,19 +61,27 @@ class PhHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        $this->assertEquals('cityescape.ph', $actual['regrinfo']['domain']['name']);
-        $this->assertEquals('2024-01-30', $actual['regrinfo']['domain']['changed']);
-        $this->assertEquals('1990-09-14', $actual['regrinfo']['domain']['created']);
-        // $this->assertEquals('2021-02-25', $actual['regrinfo']['domain']['expires']);
-        $this->assertEquals('yes', $actual['regrinfo']['registered']);
+        $expected = [
+            // 'domain'     => [
+            //     'name'    => 'google.eu',
+            //     'changed' => '2020-01-13',
+            //     'created' => '2003-03-17',
+            //     'expires' => '2022-03-17',
+            // ],
+            'registered' => 'yes',
+        ];
 
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
-    public function parseDotDotPh()
+    /**
+     * @test
+     */
+    public function parseEuridDotEu()
     {
-        $query = 'dot.ph';
+        $query = 'eurid.eu';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -81,13 +91,18 @@ class PhHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        $this->assertEquals('dot.ph', $actual['regrinfo']['domain']['name']);
-        $this->assertEquals('2016-07-25', $actual['regrinfo']['domain']['changed']);
-        $this->assertEquals('2000-08-09', $actual['regrinfo']['domain']['created']);
-        $this->assertEquals('2025-08-09', $actual['regrinfo']['domain']['expires']);
-        $this->assertEquals('yes', $actual['regrinfo']['registered']);
+        $expected = [
+            // 'domain'     => [
+            //     'name'    => 'eurid.eu',
+            //     'changed' => '2020-08-03',
+            //     'created' => '2003-03-10',
+            //     'expires' => '2023-05-08',
+            // ],
+            'registered' => 'yes',
+        ];
 
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

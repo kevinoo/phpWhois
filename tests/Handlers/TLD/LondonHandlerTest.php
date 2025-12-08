@@ -19,21 +19,21 @@
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
-use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\RuHandler;
+use phpWhois\Handlers\TLD\LondonHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * RuHandlerTest.
+ * LondonHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class RuHandlerTest extends AbstractHandler
+class LondonHandlerTest extends AbstractHandler
 {
     /**
-     * @var RuHandler
+     * @var LondonHandler
      */
     protected $handler;
 
@@ -41,16 +41,16 @@ class RuHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new RuHandler();
+        $this->handler = new LondonHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotRu()
+    public function parseNicDotLondon()
     {
-        $query = 'google.ru';
+        $query = 'nic.london';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -60,29 +60,22 @@ class RuHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        $expected = [
-            'domain' => [
-                'name' => 'GOOGLE.RU',
-                'created' => '2004-03-03',
-                // 'changed' => '2017-09-18',
-                'expires' => '2021-03-04',
-            ],
-            'registered' => 'yes',
-        ];
+        $this->assertEquals('nic.london', $actual['regrinfo']['domain']['name']);
+        $this->assertEquals('2020-02-25', $actual['regrinfo']['domain']['changed']);
+        $this->assertEquals('2014-02-25', $actual['regrinfo']['domain']['created']);
+        $this->assertEquals('2021-02-25', $actual['regrinfo']['domain']['expires']);
+        $this->assertEquals('yes', $actual['regrinfo']['registered']);
 
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
     /**
-     * Warning: for this test is used "рег.рф.txt", but this file broke "Composer" for macOS.
-     *
      * @test
      */
-    public function parsePerDotPhi(): void
+    public function parseDomainsDotLondon()
     {
-        $query = 'рег.рф';
+        $query = 'domains.london';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -92,17 +85,13 @@ class RuHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        $expected = [
-            'domain' => [
-                'name' => 'XN--C1AD6A.XN--P1AI',
-                'created' => '2009-12-11',
-                'expires' => '2026-12-11',
-            ],
-            'registered' => 'yes',
-        ];
+        $this->assertEquals('domains.london', $actual['regrinfo']['domain']['name']);
+        $this->assertEquals('2020-02-16', $actual['regrinfo']['domain']['changed']);
+        $this->assertEquals('2015-02-23', $actual['regrinfo']['domain']['created']);
+        $this->assertEquals('2021-02-23', $actual['regrinfo']['domain']['expires']);
+        $this->assertEquals('yes', $actual['regrinfo']['registered']);
 
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

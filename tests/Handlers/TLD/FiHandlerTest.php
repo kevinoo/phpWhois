@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2018 Joshua Smith
+ * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\SeHandler;
+use phpWhois\Handlers\TLD\FiHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * SeHandlerTest.
+ * FiHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class SeHandlerTest extends AbstractHandler
+class FiHandlerTest extends AbstractHandler
 {
     /**
-     * @var SeHandler
+     * @var FiHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class SeHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new SeHandler();
+        $this->handler = new FiHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotDk()
+    public function parseGoogleDotFi()
     {
-        $query = 'google.se';
+        $query = 'google.fi';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,40 @@ class SeHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.se',
-                'created' => '2003-08-27',
-                'changed' => '2017-09-18',
-                'expires' => '2018-10-20',
+                'name' => 'google.fi',
+                'created' => '2006-06-30',
+                'expires' => '2026-07-04',
+                'changed' => '2025-06-02',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @test
+     */
+    public function parseFicoraDotFi()
+    {
+        $query = 'ficora.fi';
+
+        $fixture = $this->loadFixture($query);
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain' => [
+                'name' => 'ficora.fi',
+                'created' => '2001-06-29',
+                'changed' => '2023-06-09',
+                'expires' => '2029-08-31',
             ],
             'registered' => 'yes',
         ];

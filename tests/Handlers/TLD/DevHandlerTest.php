@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\WsHandler;
+use phpWhois\Handlers\TLD\DevHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * WsHandlerTest.
+ * DevHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class WsHandlerTest extends AbstractHandler
+class DevHandlerTest extends AbstractHandler
 {
     /**
-     * @var WsHandler
+     * @var DevHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class WsHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new WsHandler();
+        $this->handler = new DevHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotWs()
+    public function parseOstapDotDev()
     {
-        $query = 'google.ws';
+        $query = 'ostap.dev';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -61,47 +62,18 @@ class WsHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain' => [
-                'name' => 'google.ws',
-                'changed' => '2020-02-01',
-                'created' => '2002-03-03',
-                'expires' => '2021-03-03',
-            ],
-            'registered' => 'yes',
+            'registered' => 'no',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
-    }
 
-    /**
-     * @test
-     */
-    public function parseSamoanicDotWs()
-    {
-        $query = 'samoanic.ws';
-
-        $fixture = $this->loadFixture($query);
-        $data = [
-            'rawdata' => $fixture,
-            'regyinfo' => [],
-        ];
-
-        $actual = $this->handler->parse($data, $query);
-
-        $expected = [
-            'domain' => [
-                'name' => 'SAMOANIC.WS',
-                'changed' => '2025-03-09',
-                'created' => '2000-03-09',
-                'expires' => '2026-03-09',
-            ],
-            'registered' => 'yes',
-        ];
-
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        //        $this->assertEquals(null, $actual['regrinfo']['domain']['name']);
+        //        $this->assertEquals('2024-06-07', $actual['regrinfo']['domain']['changed']);
+        //        $this->assertEquals('2019-02-28', $actual['regrinfo']['domain']['created']);
+        //        $this->assertEquals('2025-02-28', $actual['regrinfo']['domain']['expires']);
+        //        $this->assertEquals('yes', $actual['regrinfo']['registered']);
+        //
+        //        $this->assertArrayHasKey('rawdata', $actual);
+        //        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

@@ -16,24 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2018 Joshua Smith
+ * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
-use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\DevHandler;
+use phpWhois\Handlers\TLD\TodayHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * DevHandlerTest.
+ * TodayHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class DevHandlerTest extends AbstractHandler
+class TodayHandlerTest extends AbstractHandler
 {
     /**
-     * @var DevHandler
+     * @var TodayHandler
      */
     protected $handler;
 
@@ -41,16 +41,18 @@ class DevHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new DevHandler();
+        $this->handler = new TodayHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseOstapDotDev()
+    public function parseModxDotToday()
     {
-        $query = 'ostap.dev';
+        static::markTestSkipped('modx.today todo');
+
+        $query = 'modx.today';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -60,16 +62,10 @@ class DevHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        $expected = [
-            'registered' => 'no',
-        ];
-
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-
-        //        $this->assertEquals(null, $actual['regrinfo']['domain']['name']);
-        //        $this->assertEquals('2024-06-07', $actual['regrinfo']['domain']['changed']);
-        //        $this->assertEquals('2019-02-28', $actual['regrinfo']['domain']['created']);
-        //        $this->assertEquals('2025-02-28', $actual['regrinfo']['domain']['expires']);
+        //        $this->assertEquals('modx.today', $actual['regrinfo']['domain']['name']);
+        //        $this->assertEquals('2023-06-23', $actual['regrinfo']['domain']['changed']);
+        //        $this->assertEquals('2014-05-09', $actual['regrinfo']['domain']['created']);
+        //        $this->assertEquals('2024-05-09', $actual['regrinfo']['domain']['expires']);
         //        $this->assertEquals('yes', $actual['regrinfo']['registered']);
         //
         //        $this->assertArrayHasKey('rawdata', $actual);

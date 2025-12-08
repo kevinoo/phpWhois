@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\FrHandler;
+use phpWhois\Handlers\TLD\HuHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * FrHandlerTest.
+ * HuHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class FrHandlerTest extends AbstractHandler
+class HuHandlerTest extends AbstractHandler
 {
     /**
-     * @var FrHandler
+     * @var HuHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class FrHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new FrHandler();
+        $this->handler = new HuHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotFr()
+    public function parseGoogleDotHu()
     {
-        $query = 'google.fr';
+        $query = 'google.hu';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,10 @@ class FrHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.fr',
-                'expires' => '2026-12-30',
-                'created' => '2000-07-26',
-                'changed' => '2025-11-28',
+                'name' => 'google.hu',
+                // 'changed' => '2020-01-13',
+                'created' => '2000-03-03',
+                // 'expires' => '2022-03-17',
             ],
             'registered' => 'yes',
         ];
@@ -78,9 +79,9 @@ class FrHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseLemonadeDotFr()
+    public function parseNicDotHu()
     {
-        $query = 'lemonade.fr';
+        $query = 'nic.hu';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -92,40 +93,10 @@ class FrHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'lemonade.fr',
-                'expires' => '2026-07-30',
-                'created' => '2023-07-30',
-                'changed' => '2025-08-31',
-            ],
-            'registered' => 'yes',
-        ];
-
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
-    }
-
-    /**
-     * @test
-     */
-    public function parseNicDotFr()
-    {
-        $query = 'nic.fr';
-
-        $fixture = $this->loadFixture($query);
-        $data = [
-            'rawdata' => $fixture,
-            'regyinfo' => [],
-        ];
-
-        $actual = $this->handler->parse($data, $query);
-
-        $expected = [
-            'domain' => [
-                'name' => 'nic.fr',
-                'created' => '1995-01-01',
-                'changed' => '2024-07-18',
-                'expires' => '2029-12-31',
+                'name' => 'nic.hu',
+                // 'changed' => '2020-08-03',
+                'created' => '1996-06-27',
+                // 'expires' => '2023-05-08',
             ],
             'registered' => 'yes',
         ];

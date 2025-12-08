@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\FmHandler;
+use phpWhois\Handlers\TLD\RuHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * FmHandlerTest.
+ * RuHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class FmHandlerTest extends AbstractHandler
+class RuHandlerTest extends AbstractHandler
 {
     /**
-     * @var FmHandler
+     * @var RuHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class FmHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new FmHandler();
+        $this->handler = new RuHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotFm()
+    public function parseGoogleDotRu()
     {
-        $query = 'google.fm';
+        $query = 'google.ru';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,10 @@ class FmHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'GOOGLE.FM',
-                'changed' => '2025-09-02',
-                'created' => '2000-09-05',
-                'expires' => '2026-09-04',
+                'name' => 'GOOGLE.RU',
+                'created' => '2004-03-03',
+                // 'changed' => '2017-09-18',
+                'expires' => '2021-03-04',
             ],
             'registered' => 'yes',
         ];
@@ -76,11 +77,13 @@ class FmHandlerTest extends AbstractHandler
     }
 
     /**
+     * Warning: for this test is used "рег.рф.txt", but this file broke "Composer" for macOS.
+     *
      * @test
      */
-    public function parseDotDotFm()
+    public function parsePerDotPhi(): void
     {
-        $query = 'dot.fm';
+        $query = 'рег.рф';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -92,10 +95,9 @@ class FmHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'DOT.FM',
-                'changed' => '2023-08-31',
-                'created' => '1998-06-16',
-                'expires' => '2099-04-29',
+                'name' => 'XN--C1AD6A.XN--P1AI',
+                'created' => '2009-12-11',
+                'expires' => '2026-12-11',
             ],
             'registered' => 'yes',
         ];

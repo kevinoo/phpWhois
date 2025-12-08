@@ -5,10 +5,11 @@
  * @license   See LICENSE file
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\DeHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
  * DeHandlerTest.

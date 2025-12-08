@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2018 Joshua Smith
+ * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\OrgHandler;
+use phpWhois\Handlers\TLD\FmHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * OrgHandlerTest.
+ * FmHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class OrgHandlerTest extends AbstractHandler
+class FmHandlerTest extends AbstractHandler
 {
     /**
-     * @var OrgHandler
+     * @var FmHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class OrgHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new OrgHandler();
+        $this->handler = new FmHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotOrg()
+    public function parseGoogleDotFm()
     {
-        $query = 'google.org';
+        $query = 'google.fm';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,10 @@ class OrgHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'GOOGLE.ORG',
-                'changed' => '2017-09-18',
-                'created' => '1998-10-21',
-                'expires' => '2018-10-20',
+                'name' => 'GOOGLE.FM',
+                'changed' => '2025-09-02',
+                'created' => '2000-09-05',
+                'expires' => '2026-09-04',
             ],
             'registered' => 'yes',
         ];
@@ -78,9 +79,9 @@ class OrgHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseDatesProperly()
+    public function parseDotDotFm()
     {
-        $query = 'scottishrecoveryconsortium.org';
+        $query = 'dot.fm';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -92,7 +93,10 @@ class OrgHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'SCOTTISHRECOVERYCONSORTIUM.ORG',
+                'name' => 'DOT.FM',
+                'changed' => '2023-08-31',
+                'created' => '1998-06-16',
+                'expires' => '2099-04-29',
             ],
             'registered' => 'yes',
         ];
@@ -100,9 +104,5 @@ class OrgHandlerTest extends AbstractHandler
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
-
-        $this->assertEquals('2020-01-13', $actual['regrinfo']['domain']['changed'], 'Incorrect change date');
-        $this->assertEquals('2012-10-01', $actual['regrinfo']['domain']['created'], 'Incorrect created date');
-        $this->assertEquals('2020-10-01', $actual['regrinfo']['domain']['expires'], 'Incorrect expiration date');
     }
 }

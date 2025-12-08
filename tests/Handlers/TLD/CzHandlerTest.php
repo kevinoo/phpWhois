@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2018 Joshua Smith
+ * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\DkHandler;
+use phpWhois\Handlers\TLD\CzHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * DkHandlerTest.
+ * CzHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class DkHandlerTest extends AbstractHandler
+class CzHandlerTest extends AbstractHandler
 {
     /**
-     * @var DkHandler
+     * @var CzHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class DkHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new DkHandler();
+        $this->handler = new CzHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotDk()
+    public function parseGoogleDotCz()
     {
-        $query = 'google.dk';
+        $query = 'google.cz';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,40 @@ class DkHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'domain' => 'google.dk',
-                'registered' => '1999-01-10',
-                'expires' => '2019-03-31',
-                'status' => 'Active',
+                'name' => 'google.cz',
+                'changed' => '2018-04-23',
+                'created' => '2000-07-21',
+                'expires' => '2026-07-22',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @test
+     */
+    public function parseNicDotCz()
+    {
+        $query = 'nic.cz';
+
+        $fixture = $this->loadFixture($query);
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain' => [
+                'name' => 'nic.cz',
+                'changed' => '2020-11-17',
+                'created' => '1997-10-30',
+                'expires' => '2027-03-15',
             ],
             'registered' => 'yes',
         ];

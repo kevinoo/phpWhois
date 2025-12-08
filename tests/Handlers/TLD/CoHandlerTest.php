@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\CoZaHandler;
+use phpWhois\Handlers\TLD\CoHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * CoZaHandlerTest.
+ * CoHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class CoZaHandlerTest extends AbstractHandler
+class CoHandlerTest extends AbstractHandler
 {
     /**
-     * @var CoZaHandler
+     * @var CoHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class CoZaHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new CoZaHandler();
+        $this->handler = new CoHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotCoDotZa()
+    public function parseGoogleDotCo()
     {
-        $query = 'google.co.za';
+        $query = 'google.co';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -61,7 +62,7 @@ class CoZaHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'registered' => 'yes',
+            'registered' => 'no',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
@@ -72,9 +73,9 @@ class CoZaHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseSexDotCoDotZa()
+    public function parseNicDotCo()
     {
-        $query = 'sex.co.za';
+        $query = 'nic.co';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -85,7 +86,7 @@ class CoZaHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'registered' => 'yes',
+            'registered' => 'no',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');

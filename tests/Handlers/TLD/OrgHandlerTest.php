@@ -16,46 +16,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\FjHandler;
+use phpWhois\Handlers\TLD\OrgHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * FjHandlerTest.
+ * OrgHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class FjHandlerTest extends AbstractHandler
+class OrgHandlerTest extends AbstractHandler
 {
     /**
-     * @var FjHandler
+     * @var OrgHandler
      */
     protected $handler;
 
-    /**
-     * @noinspection PhpUnreachableStatementInspection
-     */
     protected function setUp(): void
     {
-        self::markTestSkipped('.fj domain parsing broken');
-
         parent::setUp();
 
-        $this->handler = new FjHandler();
+        $this->handler = new OrgHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseFijiDotGovDotFj(): void
+    public function parseGoogleDotOrg()
     {
-        $query = 'fiji.gov.fj';
+        $query = 'google.org';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -67,10 +63,10 @@ class FjHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'fiji.gov.fj',
-                // 'changed' => '2020-08-03',
-                // 'created' => '2003-03-10',
-                'expires' => '2020-12-31',
+                'name' => 'GOOGLE.ORG',
+                'changed' => '2017-09-18',
+                'created' => '1998-10-21',
+                'expires' => '2018-10-20',
             ],
             'registered' => 'yes',
         ];
@@ -78,5 +74,36 @@ class FjHandlerTest extends AbstractHandler
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @test
+     */
+    public function parseDatesProperly()
+    {
+        $query = 'scottishrecoveryconsortium.org';
+
+        $fixture = $this->loadFixture($query);
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain' => [
+                'name' => 'SCOTTISHRECOVERYCONSORTIUM.ORG',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+
+        $this->assertEquals('2020-01-13', $actual['regrinfo']['domain']['changed'], 'Incorrect change date');
+        $this->assertEquals('2012-10-01', $actual['regrinfo']['domain']['created'], 'Incorrect created date');
+        $this->assertEquals('2020-10-01', $actual['regrinfo']['domain']['expires'], 'Incorrect expiration date');
     }
 }

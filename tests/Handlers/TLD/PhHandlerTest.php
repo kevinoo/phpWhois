@@ -19,20 +19,21 @@
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
-use phpWhois\Handlers\TLD\LondonHandler;
+use phpWhois\Handlers\TLD\PhHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * LondonHandlerTest.
+ * PhHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class LondonHandlerTest extends AbstractHandler
+class PhHandlerTest extends AbstractHandler
 {
     /**
-     * @var LondonHandler
+     * @var PhHandler
      */
     protected $handler;
 
@@ -40,16 +41,16 @@ class LondonHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new LondonHandler();
+        $this->handler = new PhHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseNicDotLondon()
+    public function parseCityEscapeDotPh()
     {
-        $query = 'nic.london';
+        $query = 'cityescape.ph';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -59,22 +60,19 @@ class LondonHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        $this->assertEquals('nic.london', $actual['regrinfo']['domain']['name']);
-        $this->assertEquals('2020-02-25', $actual['regrinfo']['domain']['changed']);
-        $this->assertEquals('2014-02-25', $actual['regrinfo']['domain']['created']);
-        $this->assertEquals('2021-02-25', $actual['regrinfo']['domain']['expires']);
+        $this->assertEquals('cityescape.ph', $actual['regrinfo']['domain']['name']);
+        $this->assertEquals('2024-01-30', $actual['regrinfo']['domain']['changed']);
+        $this->assertEquals('1990-09-14', $actual['regrinfo']['domain']['created']);
+        // $this->assertEquals('2021-02-25', $actual['regrinfo']['domain']['expires']);
         $this->assertEquals('yes', $actual['regrinfo']['registered']);
 
         $this->assertArrayHasKey('rawdata', $actual);
         $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
-    /**
-     * @test
-     */
-    public function parseDomainsDotLondon()
+    public function parseDotDotPh()
     {
-        $query = 'domains.london';
+        $query = 'dot.ph';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -84,10 +82,10 @@ class LondonHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        $this->assertEquals('domains.london', $actual['regrinfo']['domain']['name']);
-        $this->assertEquals('2020-02-16', $actual['regrinfo']['domain']['changed']);
-        $this->assertEquals('2015-02-23', $actual['regrinfo']['domain']['created']);
-        $this->assertEquals('2021-02-23', $actual['regrinfo']['domain']['expires']);
+        $this->assertEquals('dot.ph', $actual['regrinfo']['domain']['name']);
+        $this->assertEquals('2016-07-25', $actual['regrinfo']['domain']['changed']);
+        $this->assertEquals('2000-08-09', $actual['regrinfo']['domain']['created']);
+        $this->assertEquals('2025-08-09', $actual['regrinfo']['domain']['expires']);
         $this->assertEquals('yes', $actual['regrinfo']['registered']);
 
         $this->assertArrayHasKey('rawdata', $actual);

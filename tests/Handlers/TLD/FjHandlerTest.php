@@ -19,38 +19,44 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\FiHandler;
+use phpWhois\Handlers\TLD\FjHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * FiHandlerTest.
+ * FjHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class FiHandlerTest extends AbstractHandler
+class FjHandlerTest extends AbstractHandler
 {
     /**
-     * @var FiHandler
+     * @var FjHandler
      */
     protected $handler;
 
+    /**
+     * @noinspection PhpUnreachableStatementInspection
+     */
     protected function setUp(): void
     {
+        self::markTestSkipped('.fj domain parsing broken');
+
         parent::setUp();
 
-        $this->handler = new FiHandler();
+        $this->handler = new FjHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotFi()
+    public function parseFijiDotGovDotFj(): void
     {
-        $query = 'google.fi';
+        $query = 'fiji.gov.fj';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,40 +68,10 @@ class FiHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.fi',
-                'created' => '2006-06-30',
-                'expires' => '2026-07-04',
-                'changed' => '2025-06-02',
-            ],
-            'registered' => 'yes',
-        ];
-
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
-    }
-
-    /**
-     * @test
-     */
-    public function parseFicoraDotFi()
-    {
-        $query = 'ficora.fi';
-
-        $fixture = $this->loadFixture($query);
-        $data = [
-            'rawdata' => $fixture,
-            'regyinfo' => [],
-        ];
-
-        $actual = $this->handler->parse($data, $query);
-
-        $expected = [
-            'domain' => [
-                'name' => 'ficora.fi',
-                'created' => '2001-06-29',
-                'changed' => '2023-06-09',
-                'expires' => '2029-08-31',
+                'name' => 'fiji.gov.fj',
+                // 'changed' => '2020-08-03',
+                // 'created' => '2003-03-10',
+                'expires' => '2020-12-31',
             ],
             'registered' => 'yes',
         ];

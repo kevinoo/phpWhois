@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\CoHandler;
+use phpWhois\Handlers\TLD\CoopHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * CoHandlerTest.
+ * CoopHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class CoHandlerTest extends AbstractHandler
+class CoopHandlerTest extends AbstractHandler
 {
     /**
-     * @var CoHandler
+     * @var CoopHandler
      */
     protected $handler;
 
@@ -41,16 +42,17 @@ class CoHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new CoHandler();
+        $this->handler = new CoopHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
+     * @throws \Exception
      */
-    public function parseGoogleDotCo()
+    public function parseSmileDotCoop(): void
     {
-        $query = 'google.co';
+        $query = 'smile.coop';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -61,7 +63,14 @@ class CoHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'registered' => 'no',
+            'domain' => [
+                'name' => 'smile.coop',
+                'handle' => 'D7878757-CNIC',
+                'changed' => '2024-12-28',
+                'created' => '2001-07-10',
+                'expires' => '2026-01-30',
+            ],
+            'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
@@ -71,10 +80,11 @@ class CoHandlerTest extends AbstractHandler
 
     /**
      * @test
+     * @throws \Exception
      */
-    public function parseNicDotCo()
+    public function parseNicDotCoop(): void
     {
-        $query = 'nic.co';
+        $query = 'nic.coop';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -85,7 +95,46 @@ class CoHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'registered' => 'no',
+            'domain' => [
+                'name' => 'nic.coop',
+                'handle' => 'DO_59f76c35d72c849fba8b632e12102b0d-COOP',
+                'changed' => '2024-02-26',
+                'created' => '2022-11-07',
+                'expires' => '2032-11-07',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function parseDomainsDotCoop(): void
+    {
+        $query = 'domains.coop';
+
+        $fixture = $this->loadFixture($query);
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain' => [
+                'name' => 'domains.coop',
+                'handle' => 'D7881481-CNIC',
+                'changed' => '2024-06-02',
+                'created' => '2002-07-09',
+                'expires' => '2029-07-09',
+            ],
+            'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');

@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\UkHandler;
+use phpWhois\Handlers\TLD\FrHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * UkHandlerTest.
+ * FrHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class UkHandlerTest extends AbstractHandler
+class FrHandlerTest extends AbstractHandler
 {
     /**
-     * @var UkHandler
+     * @var FrHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class UkHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new UkHandler();
+        $this->handler = new FrHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseVibrantDigitalFutureDotUk()
+    public function parseGoogleDotFr()
     {
-        $query = 'vibrantdigitalfuture.uk';
+        $query = 'google.fr';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,23 +63,25 @@ class UkHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'created' => '2024-10-24',
-                'expires' => '2025-10-24',
-                'changed' => '2025-10-31',
+                'name' => 'google.fr',
+                'expires' => '2026-12-30',
+                'created' => '2000-07-26',
+                'changed' => '2025-11-28',
             ],
-            'registered' => 'no',
+            'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotCoDotUk()
+    public function parseLemonadeDotFr()
     {
-        $query = 'google.co.uk';
+        $query = 'lemonade.fr';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -90,24 +93,25 @@ class UkHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                // 'name'    => 'google.co.uk',
-                'created' => '1999-02-14',
-                'expires' => '2026-02-14',
-                'changed' => '2025-01-13',
+                'name' => 'lemonade.fr',
+                'expires' => '2026-07-30',
+                'created' => '2023-07-30',
+                'changed' => '2025-08-31',
             ],
             'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 
     /**
      * @test
      */
-    public function parseOlsnsDotCoDotUk()
+    public function parseNicDotFr()
     {
-        $query = 'olsns.co.uk';
+        $query = 'nic.fr';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -119,15 +123,16 @@ class UkHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                // 'name'    => 'olsns.co.uk',
-                'created' => '2001-02-21',
-                'expires' => '2026-02-21',
-                'changed' => '2025-02-19',
+                'name' => 'nic.fr',
+                'created' => '1995-01-01',
+                'changed' => '2024-07-18',
+                'expires' => '2029-12-31',
             ],
             'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
         Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

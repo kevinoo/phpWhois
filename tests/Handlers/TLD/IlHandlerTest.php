@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\CzHandler;
+use phpWhois\Handlers\TLD\IlHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * CzHandlerTest.
+ * IlHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class CzHandlerTest extends AbstractHandler
+class IlHandlerTest extends AbstractHandler
 {
     /**
-     * @var CzHandler
+     * @var IlHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class CzHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new CzHandler();
+        $this->handler = new IlHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotCz()
+    public function parseTapuzDotCoDotIl()
     {
-        $query = 'google.cz';
+        $query = 'tapuz.co.il';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,10 @@ class CzHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.cz',
-                'changed' => '2018-04-23',
-                'created' => '2000-07-21',
-                'expires' => '2026-07-22',
+                'query' => 'tapuz.co.il',
+                'changed' => '2021-09-13',
+                //                'expires' => '2020-06-11',
+                'validity' => '13-09-2026',
             ],
             'registered' => 'yes',
         ];
@@ -78,9 +79,9 @@ class CzHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseNicDotCz()
+    public function parseVenetaCucineCoIl()
     {
-        $query = 'nic.cz';
+        $query = 'venetacucine.co.il';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -92,10 +93,10 @@ class CzHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'nic.cz',
-                'changed' => '2020-11-17',
-                'created' => '1997-10-30',
-                'expires' => '2027-03-15',
+                'domain' => 'venetacucine.co.il',
+                // 'created' => '2003-03-10',
+                'changed' => '2011-02-17',
+                //                'expires' => '2020-06-11',
             ],
             'registered' => 'yes',
         ];

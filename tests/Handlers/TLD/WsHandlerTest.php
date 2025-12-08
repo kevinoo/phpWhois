@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\HuHandler;
+use phpWhois\Handlers\TLD\WsHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * HuHandlerTest.
+ * WsHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class HuHandlerTest extends AbstractHandler
+class WsHandlerTest extends AbstractHandler
 {
     /**
-     * @var HuHandler
+     * @var WsHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class HuHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new HuHandler();
+        $this->handler = new WsHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotHu()
+    public function parseGoogleDotWs()
     {
-        $query = 'google.hu';
+        $query = 'google.ws';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,10 +63,10 @@ class HuHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.hu',
-                // 'changed' => '2020-01-13',
-                'created' => '2000-03-03',
-                // 'expires' => '2022-03-17',
+                'name' => 'google.ws',
+                'changed' => '2020-02-01',
+                'created' => '2002-03-03',
+                'expires' => '2021-03-03',
             ],
             'registered' => 'yes',
         ];
@@ -78,9 +79,9 @@ class HuHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseNicDotHu()
+    public function parseSamoanicDotWs()
     {
-        $query = 'nic.hu';
+        $query = 'samoanic.ws';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -92,10 +93,10 @@ class HuHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'nic.hu',
-                // 'changed' => '2020-08-03',
-                'created' => '1996-06-27',
-                // 'expires' => '2023-05-08',
+                'name' => 'SAMOANIC.WS',
+                'changed' => '2025-03-09',
+                'created' => '2000-03-09',
+                'expires' => '2026-03-09',
             ],
             'registered' => 'yes',
         ];

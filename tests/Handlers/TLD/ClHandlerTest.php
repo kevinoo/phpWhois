@@ -16,23 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
-use phpWhois\Handlers\TLD\TodayHandler;
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
+use phpWhois\Handlers\TLD\ClHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * TodayHandlerTest.
+ * ClHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class TodayHandlerTest extends AbstractHandler
+class ClHandlerTest extends AbstractHandler
 {
     /**
-     * @var TodayHandler
+     * @var ClHandler
      */
     protected $handler;
 
@@ -40,18 +42,16 @@ class TodayHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new TodayHandler();
+        $this->handler = new ClHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseModxDotToday()
+    public function parseGoogleDotCl()
     {
-        static::markTestSkipped('modx.today todo');
-
-        $query = 'modx.today';
+        $query = 'google.cl';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -61,13 +61,18 @@ class TodayHandlerTest extends AbstractHandler
 
         $actual = $this->handler->parse($data, $query);
 
-        //        $this->assertEquals('modx.today', $actual['regrinfo']['domain']['name']);
-        //        $this->assertEquals('2023-06-23', $actual['regrinfo']['domain']['changed']);
-        //        $this->assertEquals('2014-05-09', $actual['regrinfo']['domain']['created']);
-        //        $this->assertEquals('2024-05-09', $actual['regrinfo']['domain']['expires']);
-        //        $this->assertEquals('yes', $actual['regrinfo']['registered']);
-        //
-        //        $this->assertArrayHasKey('rawdata', $actual);
-        //        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        $expected = [
+            'domain' => [
+                'name' => 'google.cl',
+                // 'changed' => '2020-01-13',
+                'created' => '2002-10-22',
+                'expires' => '2026-11-20',
+            ],
+            // 'registered' => 'yes', // Currently broken
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
+        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

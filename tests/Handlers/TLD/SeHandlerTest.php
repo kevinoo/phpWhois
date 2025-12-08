@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\IlHandler;
+use phpWhois\Handlers\TLD\SeHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * IlHandlerTest.
+ * SeHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class IlHandlerTest extends AbstractHandler
+class SeHandlerTest extends AbstractHandler
 {
     /**
-     * @var IlHandler
+     * @var SeHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class IlHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new IlHandler();
+        $this->handler = new SeHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseTapuzDotCoDotIl()
+    public function parseGoogleDotDk()
     {
-        $query = 'tapuz.co.il';
+        $query = 'google.se';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,40 +63,10 @@ class IlHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'query' => 'tapuz.co.il',
-                'changed' => '2021-09-13',
-                //                'expires' => '2020-06-11',
-                'validity' => '13-09-2026',
-            ],
-            'registered' => 'yes',
-        ];
-
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
-    }
-
-    /**
-     * @test
-     */
-    public function parseVenetaCucineCoIl()
-    {
-        $query = 'venetacucine.co.il';
-
-        $fixture = $this->loadFixture($query);
-        $data = [
-            'rawdata' => $fixture,
-            'regyinfo' => [],
-        ];
-
-        $actual = $this->handler->parse($data, $query);
-
-        $expected = [
-            'domain' => [
-                'domain' => 'venetacucine.co.il',
-                // 'created' => '2003-03-10',
-                'changed' => '2011-02-17',
-                //                'expires' => '2020-06-11',
+                'name' => 'google.se',
+                'created' => '2003-08-27',
+                'changed' => '2017-09-18',
+                'expires' => '2018-10-20',
             ],
             'registered' => 'yes',
         ];

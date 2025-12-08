@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\EuHandler;
+use phpWhois\Handlers\TLD\CoZaHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * EuHandlerTest.
+ * CoZaHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class EuHandlerTest extends AbstractHandler
+class CoZaHandlerTest extends AbstractHandler
 {
     /**
-     * @var EuHandler
+     * @var CoZaHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class EuHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new EuHandler();
+        $this->handler = new CoZaHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotEu()
+    public function parseGoogleDotCoDotZa()
     {
-        $query = 'google.eu';
+        $query = 'google.co.za';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -61,12 +62,6 @@ class EuHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            // 'domain'     => [
-            //     'name'    => 'google.eu',
-            //     'changed' => '2020-01-13',
-            //     'created' => '2003-03-17',
-            //     'expires' => '2022-03-17',
-            // ],
             'registered' => 'yes',
         ];
 
@@ -78,9 +73,9 @@ class EuHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseEuridDotEu()
+    public function parseSexDotCoDotZa()
     {
-        $query = 'eurid.eu';
+        $query = 'sex.co.za';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -91,12 +86,6 @@ class EuHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            // 'domain'     => [
-            //     'name'    => 'eurid.eu',
-            //     'changed' => '2020-08-03',
-            //     'created' => '2003-03-10',
-            //     'expires' => '2023-05-08',
-            // ],
             'registered' => 'yes',
         ];
 

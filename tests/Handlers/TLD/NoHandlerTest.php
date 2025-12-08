@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\IeHandler;
+use phpWhois\Handlers\TLD\NoHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * IeHandlerTest.
+ * SeHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class IeHandlerTest extends AbstractHandler
+class NoHandlerTest extends AbstractHandler
 {
     /**
-     * @var IeHandler
+     * @var NoHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class IeHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new IeHandler();
+        $this->handler = new NoHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotIe()
+    public function parseGoogleDotNo()
     {
-        $query = 'google.ie';
+        $query = 'google.no';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -61,7 +62,12 @@ class IeHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'registered' => 'no',
+            'domain' => [
+                'name' => 'google.no',
+                'created' => '2001-02-26',
+                'changed' => '2018-06-22',
+            ],
+            'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
@@ -72,9 +78,9 @@ class IeHandlerTest extends AbstractHandler
     /**
      * @test
      */
-    public function parseDomainregistryDotIe()
+    public function parseNoridDotNo()
     {
-        $query = 'domainregistry.ie';
+        $query = 'norid.no';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -85,7 +91,12 @@ class IeHandlerTest extends AbstractHandler
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'registered' => 'no',
+            'domain' => [
+                'name' => 'norid.no',
+                'created' => '1999-11-15',
+                'changed' => '2018-05-24',
+            ],
+            'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');

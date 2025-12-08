@@ -19,21 +19,22 @@
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\EduHandler;
+use phpWhois\Handlers\TLD\UsHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * EduHandlerTest.
+ * UsHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class EduHandlerTest extends AbstractHandler
+class UsHandlerTest extends AbstractHandler
 {
     /**
-     * @var EduHandler
+     * @var UsHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class EduHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new EduHandler();
+        $this->handler = new UsHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseBerkeleyDotEdu()
+    public function parseGoogleDotUs()
     {
-        $query = 'berkeley.edu';
+        $query = 'google.us';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,15 +63,46 @@ class EduHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'berkeley.edu',
-                'changed' => '2025-09-11',
-                'created' => '1985-04-24',
+                'name' => 'google.us',
+                'changed' => '2025-03-22',
+                'created' => '2002-04-19',
+                'expires' => '2026-04-18',
             ],
-            // 'registered' => 'yes', // Currently broken
+            'registered' => 'yes',
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+    }
+
+    /**
+     * @test
+     */
+    public function parseNeustarDotUs()
+    {
+        $query = 'neustar.us';
+
+        $fixture = $this->loadFixture($query);
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
+        ];
+
+        $actual = $this->handler->parse($data, $query);
+
+        $expected = [
+            'domain' => [
+                'name' => 'neustar.us',
+                'changed' => '2025-06-02',
+                'created' => '2002-04-18',
+                'expires' => '2026-04-17',
+            ],
+            'registered' => 'yes',
+        ];
+
+        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
+        $this->assertArrayHasKey('rawdata', $actual);
+        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

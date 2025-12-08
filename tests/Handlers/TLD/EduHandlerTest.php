@@ -16,24 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\TLD\CnHandler;
+use phpWhois\Handlers\TLD\EduHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
- * CnHandlerTest.
+ * EduHandlerTest.
  *
  * @internal
  * @coversNothing
  */
-class CnHandlerTest extends AbstractHandler
+class EduHandlerTest extends AbstractHandler
 {
     /**
-     * @var CnHandler
+     * @var EduHandler
      */
     protected $handler;
 
@@ -41,16 +42,16 @@ class CnHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new CnHandler();
+        $this->handler = new EduHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
      */
-    public function parseGoogleDotCn()
+    public function parseBerkeleyDotEdu()
     {
-        $query = 'google.cn';
+        $query = 'berkeley.edu';
 
         $fixture = $this->loadFixture($query);
         $data = [
@@ -62,46 +63,15 @@ class CnHandlerTest extends AbstractHandler
 
         $expected = [
             'domain' => [
-                'name' => 'google.cn',
-                // 'changed' => '2020-01-13',
-                'created' => '2003-03-17',
-                'expires' => '2026-03-17',
+                'name' => 'berkeley.edu',
+                'changed' => '2025-09-11',
+                'created' => '1985-04-24',
             ],
-            'registered' => 'yes',
+            // 'registered' => 'yes', // Currently broken
         ];
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
         $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
-    }
-
-    /**
-     * @test
-     */
-    public function parseChinaDotCn()
-    {
-        $query = 'china.cn';
-
-        $fixture = $this->loadFixture($query);
-        $data = [
-            'rawdata' => $fixture,
-            'regyinfo' => [],
-        ];
-
-        $actual = $this->handler->parse($data, $query);
-
-        $expected = [
-            'domain' => [
-                'name' => 'china.cn',
-                // 'changed' => '2020-08-03',
-                'created' => '2003-03-10',
-                'expires' => '2028-05-08',
-            ],
-            'registered' => 'yes',
-        ];
-
-        Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
-        $this->assertArrayHasKey('rawdata', $actual);
-        Assert::assertArraySubset($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

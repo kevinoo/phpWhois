@@ -19,10 +19,11 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\TLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\ChHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
  * ChHandlerTest.
