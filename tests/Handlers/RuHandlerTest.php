@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\RuHandler;
 
 /**
- * RuHandlerTest
+ * RuHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class RuHandlerTest extends AbstractHandler
 {
     /**
-     * @var RuHandler $handler
+     * @var RuHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new RuHandler();
+        $this->handler = new RuHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotRu()
@@ -55,16 +53,16 @@ class RuHandlerTest extends AbstractHandler
         $query = 'google.ru';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'GOOGLE.RU',
+            'domain' => [
+                'name' => 'GOOGLE.RU',
                 'created' => '2004-03-03',
                 // 'changed' => '2017-09-18',
                 'expires' => '2021-03-04',
@@ -78,8 +76,8 @@ class RuHandlerTest extends AbstractHandler
     }
 
     /**
-     * Warning: for this test is used "рег.рф.txt", but this file broke "Composer" for macOS
-     * @return void
+     * Warning: for this test is used "рег.рф.txt", but this file broke "Composer" for macOS.
+     *
      * @test
      */
     public function parsePerDotPhi(): void
@@ -87,16 +85,16 @@ class RuHandlerTest extends AbstractHandler
         $query = 'рег.рф';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'XN--C1AD6A.XN--P1AI',
+            'domain' => [
+                'name' => 'XN--C1AD6A.XN--P1AI',
                 'created' => '2009-12-11',
                 'expires' => '2026-12-11',
             ],

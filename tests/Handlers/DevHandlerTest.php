@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\DevHandler;
 
 /**
- * DevHandlerTest
+ * DevHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class DevHandlerTest extends AbstractHandler
 {
     /**
-     * @var DevHandler $handler
+     * @var DevHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new DevHandler();
+        $this->handler = new DevHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseOstapDotDev()
@@ -55,8 +53,8 @@ class DevHandlerTest extends AbstractHandler
         $query = 'ostap.dev';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
@@ -68,13 +66,13 @@ class DevHandlerTest extends AbstractHandler
 
         Assert::assertArraySubset($expected, $actual['regrinfo'], 'Whois data may have changed');
 
-//        $this->assertEquals(null, $actual['regrinfo']['domain']['name']);
-//        $this->assertEquals('2024-06-07', $actual['regrinfo']['domain']['changed']);
-//        $this->assertEquals('2019-02-28', $actual['regrinfo']['domain']['created']);
-//        $this->assertEquals('2025-02-28', $actual['regrinfo']['domain']['expires']);
-//        $this->assertEquals('yes', $actual['regrinfo']['registered']);
-//
-//        $this->assertArrayHasKey('rawdata', $actual);
-//        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
+        //        $this->assertEquals(null, $actual['regrinfo']['domain']['name']);
+        //        $this->assertEquals('2024-06-07', $actual['regrinfo']['domain']['changed']);
+        //        $this->assertEquals('2019-02-28', $actual['regrinfo']['domain']['created']);
+        //        $this->assertEquals('2025-02-28', $actual['regrinfo']['domain']['expires']);
+        //        $this->assertEquals('yes', $actual['regrinfo']['registered']);
+        //
+        //        $this->assertArrayHasKey('rawdata', $actual);
+        //        $this->assertEquals($fixture, $actual['rawdata'], 'Fixture data may be out of date');
     }
 }

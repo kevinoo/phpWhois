@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
@@ -25,17 +25,19 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\FjHandler;
 
 /**
- * FjHandlerTest
+ * FjHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class FjHandlerTest extends AbstractHandler
 {
     /**
-     * @var FjHandler $handler
+     * @var FjHandler
      */
     protected $handler;
 
     /**
-     * @return void
      * @noinspection PhpUnreachableStatementInspection
      */
     protected function setUp(): void
@@ -44,29 +46,28 @@ class FjHandlerTest extends AbstractHandler
 
         parent::setUp();
 
-        $this->handler            = new FjHandler();
+        $this->handler = new FjHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
-     * @return void
      */
     public function parseFijiDotGovDotFj(): void
     {
         $query = 'fiji.gov.fj';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'fiji.gov.fj',
+            'domain' => [
+                'name' => 'fiji.gov.fj',
                 // 'changed' => '2020-08-03',
                 // 'created' => '2003-03-10',
                 'expires' => '2020-12-31',

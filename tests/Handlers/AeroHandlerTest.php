@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   See LICENSE file
  * @copyright Copyright (c) 2020 Joshua Smith
@@ -10,29 +11,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\AeroHandler;
 
 /**
- * AeroHandlerTest
+ * AeroHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class AeroHandlerTest extends AbstractHandler
 {
     /**
-     * @var AeroHandler $handler
+     * @var AeroHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new AeroHandler();
+        $this->handler = new AeroHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNicDotAero()
@@ -40,16 +39,16 @@ class AeroHandlerTest extends AbstractHandler
         $query = 'nic.aero';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'nic.aero',
+            'domain' => [
+                'name' => 'nic.aero',
                 'changed' => '2025-04-22',
                 'created' => '2002-03-08',
                 'expires' => '2026-03-08',

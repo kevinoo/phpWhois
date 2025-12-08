@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\DkHandler;
 
 /**
- * DkHandlerTest
+ * DkHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class DkHandlerTest extends AbstractHandler
 {
     /**
-     * @var DkHandler $handler
+     * @var DkHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new DkHandler();
+        $this->handler = new DkHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotDk()
@@ -55,19 +53,19 @@ class DkHandlerTest extends AbstractHandler
         $query = 'google.dk';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'domain'     => 'google.dk',
+            'domain' => [
+                'domain' => 'google.dk',
                 'registered' => '1999-01-10',
-                'expires'    => '2019-03-31',
-                'status'     => 'Active',
+                'expires' => '2019-03-31',
+                'status' => 'Active',
             ],
             'registered' => 'yes',
         ];

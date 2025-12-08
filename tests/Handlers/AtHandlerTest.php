@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2020 Joshua Smith
  * @license   See LICENSE file
@@ -10,29 +11,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\AtHandler;
 
 /**
- * AtHandlerTest
+ * AtHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class AtHandlerTest extends AbstractHandler
 {
     /**
-     * @var AtHandler $handler
+     * @var AtHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new AtHandler();
+        $this->handler = new AtHandler();
         $this->handler->atepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function nicDotAt()
@@ -40,15 +39,15 @@ class AtHandlerTest extends AbstractHandler
         $query = 'nic.at';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
+            'domain' => [
                 // 'name'    => 'nic.at',
                 'changed' => '2020-04-27',
             ],

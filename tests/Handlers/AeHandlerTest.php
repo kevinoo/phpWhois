@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\AeHandler;
 
 /**
- * AeHandlerTest
+ * AeHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class AeHandlerTest extends AbstractHandler
 {
     /**
-     * @var AeHandler $handler
+     * @var AeHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new AeHandler();
+        $this->handler = new AeHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotAe()
@@ -55,23 +53,23 @@ class AeHandlerTest extends AbstractHandler
         $query = 'google.ae';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'google.ae',
+            'domain' => [
+                'name' => 'google.ae',
                 'sponsor' => 'MarkMonitor',
-                'status'  => 'clientUpdateProhibited',
+                'status' => 'clientUpdateProhibited',
             ],
-            'owner'      => [
+            'owner' => [
                 'name' => 'Domain Administrator',
             ],
-            'tech'       => [
+            'tech' => [
                 'name' => 'Domain Administrator',
             ],
             'registered' => 'yes',
@@ -83,8 +81,6 @@ class AeHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNicDotAe()
@@ -92,23 +88,23 @@ class AeHandlerTest extends AbstractHandler
         $query = 'nic.ae';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'nic.ae',
+            'domain' => [
+                'name' => 'nic.ae',
                 'sponsor' => 'Etisalat',
-                'status'  => 'clientUpdateProhibited',
+                'status' => 'clientUpdateProhibited',
             ],
-            'owner'      => [
+            'owner' => [
                 'name' => 'Emirates Telecommunications Corporation - Etisalat',
             ],
-            'tech'       => [
+            'tech' => [
                 'name' => 'Emirates Telecommunications Corporation - Etisalat',
             ],
             'registered' => 'yes',
@@ -120,8 +116,6 @@ class AeHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseAedaDotAe()
@@ -129,23 +123,23 @@ class AeHandlerTest extends AbstractHandler
         $query = 'aeda.ae';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'aeda.ae',
+            'domain' => [
+                'name' => 'aeda.ae',
                 'sponsor' => 'aeDA Regulator',
-                'status'  => 'ok',
+                'status' => 'ok',
             ],
-            'owner'      => [
+            'owner' => [
                 'name' => 'Telecommunication Regulatory Authority',
             ],
-            'tech'       => [
+            'tech' => [
                 'name' => '.ae Domain Administration',
             ],
             'registered' => 'yes',

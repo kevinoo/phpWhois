@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
@@ -25,47 +25,46 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\IlHandler;
 
 /**
- * IlHandlerTest
+ * IlHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class IlHandlerTest extends AbstractHandler
 {
     /**
-     * @var IlHandler $handler
+     * @var IlHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new IlHandler();
+        $this->handler = new IlHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
-     * @return void
      */
     public function parseTapuzDotCoDotIl()
     {
         $query = 'tapuz.co.il';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'query'    => 'tapuz.co.il',
+            'domain' => [
+                'query' => 'tapuz.co.il',
                 'changed' => '2021-09-13',
-//                'expires' => '2020-06-11',
+                //                'expires' => '2020-06-11',
                 'validity' => '13-09-2026',
             ],
             'registered' => 'yes',
@@ -78,26 +77,25 @@ class IlHandlerTest extends AbstractHandler
 
     /**
      * @test
-     * @return void
      */
     public function parseVenetaCucineCoIl()
     {
         $query = 'venetacucine.co.il';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'domain'    => 'venetacucine.co.il',
+            'domain' => [
+                'domain' => 'venetacucine.co.il',
                 // 'created' => '2003-03-10',
                 'changed' => '2011-02-17',
-//                'expires' => '2020-06-11',
+                //                'expires' => '2020-06-11',
             ],
             'registered' => 'yes',
         ];

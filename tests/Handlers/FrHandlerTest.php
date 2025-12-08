@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\FrHandler;
 
 /**
- * FrHandlerTest
+ * FrHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class FrHandlerTest extends AbstractHandler
 {
     /**
-     * @var FrHandler $handler
+     * @var FrHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new FrHandler();
+        $this->handler = new FrHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotFr()
@@ -55,16 +53,16 @@ class FrHandlerTest extends AbstractHandler
         $query = 'google.fr';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'google.fr',
+            'domain' => [
+                'name' => 'google.fr',
                 'expires' => '2026-12-30',
                 'created' => '2000-07-26',
                 'changed' => '2025-11-28',
@@ -78,8 +76,6 @@ class FrHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseLemonadeDotFr()
@@ -87,16 +83,16 @@ class FrHandlerTest extends AbstractHandler
         $query = 'lemonade.fr';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'lemonade.fr',
+            'domain' => [
+                'name' => 'lemonade.fr',
                 'expires' => '2026-07-30',
                 'created' => '2023-07-30',
                 'changed' => '2025-08-31',
@@ -110,8 +106,6 @@ class FrHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNicDotFr()
@@ -119,18 +113,18 @@ class FrHandlerTest extends AbstractHandler
         $query = 'nic.fr';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'nic.fr',
+            'domain' => [
+                'name' => 'nic.fr',
                 'created' => '1995-01-01',
-				'changed' => '2024-07-18',
+                'changed' => '2024-07-18',
                 'expires' => '2029-12-31',
             ],
             'registered' => 'yes',

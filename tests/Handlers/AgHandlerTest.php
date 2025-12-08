@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   See LICENSE file
  * @copyright Copyright (c) 2020 Joshua Smith
@@ -10,29 +11,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\AgHandler;
 
 /**
- * AgHandlerTest
+ * AgHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class AgHandlerTest extends AbstractHandler
 {
     /**
-     * @var AgHandler $handler
+     * @var AgHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new AgHandler();
+        $this->handler = new AgHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNicDotAg()
@@ -40,16 +39,16 @@ class AgHandlerTest extends AbstractHandler
         $query = 'nic.ag';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'nic.ag',
+            'domain' => [
+                'name' => 'nic.ag',
                 'changed' => '2025-06-16',
                 'created' => '1998-05-02',
                 'expires' => '2026-05-02',

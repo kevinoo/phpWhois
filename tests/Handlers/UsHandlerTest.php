@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\UsHandler;
 
 /**
- * UsHandlerTest
+ * UsHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class UsHandlerTest extends AbstractHandler
 {
     /**
-     * @var USHandler $handler
+     * @var UsHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new USHandler();
+        $this->handler = new UsHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotUs()
@@ -55,16 +53,16 @@ class UsHandlerTest extends AbstractHandler
         $query = 'google.us';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'google.us',
+            'domain' => [
+                'name' => 'google.us',
                 'changed' => '2025-03-22',
                 'created' => '2002-04-19',
                 'expires' => '2026-04-18',
@@ -78,8 +76,6 @@ class UsHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNeustarDotUs()
@@ -87,16 +83,16 @@ class UsHandlerTest extends AbstractHandler
         $query = 'neustar.us';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'neustar.us',
+            'domain' => [
+                'name' => 'neustar.us',
                 'changed' => '2025-06-02',
                 'created' => '2002-04-18',
                 'expires' => '2026-04-17',

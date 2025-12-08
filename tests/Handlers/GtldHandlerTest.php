@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
@@ -24,29 +24,27 @@ namespace Tests\Handlers;
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
 
 /**
- * GtldHandlerTest
+ * GtldHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class GtldHandlerTest extends AbstractHandler
 {
     /**
-     * @var \gtld_handler $handler
+     * @var \gtld_handler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new \gtld_handler();
+        $this->handler = new \gtld_handler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotCom()
@@ -54,16 +52,16 @@ class GtldHandlerTest extends AbstractHandler
         $query = 'google.com';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            "rawdata"  => $fixture,
-            "regyinfo" => [],
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'GOOGLE.COM',
+            'domain' => [
+                'name' => 'GOOGLE.COM',
                 'changed' => '2011-07-20',
                 'created' => '1997-09-15',
                 'expires' => '2020-09-14',

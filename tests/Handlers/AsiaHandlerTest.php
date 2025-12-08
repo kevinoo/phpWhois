@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2020 Joshua Smith
  * @license   See LICENSE file
@@ -10,29 +11,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\AsiaHandler;
 
 /**
- * AsiaHandlerTest
+ * AsiaHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class AsiaHandlerTest extends AbstractHandler
 {
     /**
-     * @var AsiaHandler $handler
+     * @var AsiaHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new AsiaHandler();
+        $this->handler = new AsiaHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNicDotAsia()
@@ -40,16 +39,16 @@ class AsiaHandlerTest extends AbstractHandler
         $query = 'nic.asia';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'nic.asia',
+            'domain' => [
+                'name' => 'nic.asia',
                 'changed' => '2025-04-14',
                 'created' => '2020-02-28',
                 'expires' => '2026-02-28',

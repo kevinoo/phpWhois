@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
@@ -23,16 +23,18 @@ namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
 
-
+/**
+ * @internal
+ * @coversNothing
+ */
 class AfternicHandlerTest extends AbstractHandler
 {
     /**
-     * @var \afternic_handler $handler
+     * @var \afternic_handler
      */
     protected $handler;
 
     /**
-     * @return void
      * @noinspection PhpUnreachableStatementInspection
      */
     protected function setUp(): void
@@ -40,13 +42,11 @@ class AfternicHandlerTest extends AbstractHandler
         self::markTestSkipped('Not sure what to do with this yet');
         parent::setUp();
 
-        $this->handler            = new \afternic_handler();
+        $this->handler = new \afternic_handler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseBuydomainsDotCom()
@@ -56,15 +56,15 @@ class AfternicHandlerTest extends AbstractHandler
         $fixture = $this->loadFixture($query);
 
         $data = [
-            'rawdata'  => $fixture,
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'buydomains.com',
+            'domain' => [
+                'name' => 'buydomains.com',
                 // 'changed' => '2020-08-03',
                 'created' => '2003-03-10',
                 'expires' => '2023-05-08',

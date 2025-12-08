@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,55 +16,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use Exception;
 use phpWhois\Handlers\TLD\CoopHandler;
 
 /**
- * CoopHandlerTest
+ * CoopHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class CoopHandlerTest extends AbstractHandler
 {
     /**
-     * @var CoopHandler $handler
+     * @var CoopHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new CoopHandler();
+        $this->handler = new CoopHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
      * @test
-     * @throws Exception
+     * @throws \Exception
      */
     public function parseSmileDotCoop(): void
     {
         $query = 'smile.coop';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
+            'domain' => [
                 'name' => 'smile.coop',
                 'handle' => 'D7878757-CNIC',
                 'changed' => '2024-12-28',
@@ -80,22 +79,22 @@ class CoopHandlerTest extends AbstractHandler
 
     /**
      * @test
-     * @throws Exception
+     * @throws \Exception
      */
     public function parseNicDotCoop(): void
     {
         $query = 'nic.coop';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
+            'domain' => [
                 'name' => 'nic.coop',
                 'handle' => 'DO_59f76c35d72c849fba8b632e12102b0d-COOP',
                 'changed' => '2024-02-26',
@@ -112,22 +111,22 @@ class CoopHandlerTest extends AbstractHandler
 
     /**
      * @test
-     * @throws Exception
+     * @throws \Exception
      */
     public function parseDomainsDotCoop(): void
     {
         $query = 'domains.coop';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
+            'domain' => [
                 'name' => 'domains.coop',
                 'handle' => 'D7881481-CNIC',
                 'changed' => '2024-06-02',

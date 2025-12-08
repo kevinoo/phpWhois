@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2020 Joshua Smith
  * @license   See LICENSE file
@@ -10,29 +11,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\BrHandler;
 
 /**
- * BrHandlerTest
+ * BrHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class BrHandlerTest extends AbstractHandler
 {
     /**
-     * @var BrHandler $handler
+     * @var BrHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new BrHandler();
+        $this->handler = new BrHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseRegistroDotBr()
@@ -40,16 +39,16 @@ class BrHandlerTest extends AbstractHandler
         $query = 'registro.br';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'registro.br',
+            'domain' => [
+                'name' => 'registro.br',
                 'changed' => '2018-04-02',
                 'created' => '1999-02-21',
             ],

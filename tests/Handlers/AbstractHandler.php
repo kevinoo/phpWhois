@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,38 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
 namespace Tests\Handlers;
 
-use InvalidArgumentException;
 use Tests\BaseTestCase;
 
-
 /**
- * HandlerTest
+ * HandlerTest.
  */
 abstract class AbstractHandler extends BaseTestCase
 {
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        if( !defined('DEBUG_MODE') ){
-            define('DEBUG_MODE',true);
+        if (!defined('DEBUG_MODE')) {
+            define('DEBUG_MODE', true);
         }
     }
 
     /**
-     * @param string $which
-     *
      * @return string[]
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function loadFixture(string $which): array
     {
@@ -65,6 +58,6 @@ abstract class AbstractHandler extends BaseTestCase
             return explode("\n", $raw);
         }
 
-        throw new InvalidArgumentException("Cannot find fixture `{$fixture}`");
+        throw new \InvalidArgumentException("Cannot find fixture `{$fixture}`");
     }
 }

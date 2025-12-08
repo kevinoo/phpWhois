@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2020 Joshua Smith
  * @license   See LICENSE file
@@ -10,29 +11,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\BhHandler;
 
 /**
- * BhHandlerTest
+ * BhHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class BhHandlerTest extends AbstractHandler
 {
     /**
-     * @var BhHandler $handler
+     * @var BhHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new BhHandler();
+        $this->handler = new BhHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNicDotBh()
@@ -40,17 +39,17 @@ class BhHandlerTest extends AbstractHandler
         $query = 'nic.bh';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'NIC.BH',
-				'changed' => '2023-08-31',
+            'domain' => [
+                'name' => 'NIC.BH',
+                'changed' => '2023-08-31',
                 'created' => '2019-04-24',
                 'expires' => '2029-04-24',
             ],

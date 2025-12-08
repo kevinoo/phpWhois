@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\NoHandler;
 
 /**
- * SeHandlerTest
+ * SeHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class NoHandlerTest extends AbstractHandler
 {
     /**
-     * @var NoHandler $handler
+     * @var NoHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new NoHandler();
+        $this->handler = new NoHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotNo()
@@ -55,16 +53,16 @@ class NoHandlerTest extends AbstractHandler
         $query = 'google.no';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'google.no',
+            'domain' => [
+                'name' => 'google.no',
                 'created' => '2001-02-26',
                 'changed' => '2018-06-22',
             ],
@@ -77,8 +75,6 @@ class NoHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNoridDotNo()
@@ -86,16 +82,16 @@ class NoHandlerTest extends AbstractHandler
         $query = 'norid.no';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'norid.no',
+            'domain' => [
+                'name' => 'norid.no',
                 'created' => '1999-11-15',
                 'changed' => '2018-05-24',
             ],

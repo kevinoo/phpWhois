@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
@@ -25,17 +25,19 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\ChHandler;
 
 /**
- * ChHandlerTest
+ * ChHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class ChHandlerTest extends AbstractHandler
 {
     /**
-     * @var ChHandler $handler
+     * @var ChHandler
      */
     protected $handler;
 
     /**
-     * @return void
      * @noinspection PhpUnreachableStatementInspection
      */
     protected function setUp(): void
@@ -44,13 +46,11 @@ class ChHandlerTest extends AbstractHandler
 
         parent::setUp();
 
-        $this->handler            = new ChHandler();
+        $this->handler = new ChHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotCh()
@@ -58,16 +58,16 @@ class ChHandlerTest extends AbstractHandler
         $query = 'google.ch';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'google.ch',
+            'domain' => [
+                'name' => 'google.ch',
                 'changed' => '2020-01-13',
                 'created' => '2006-02-13',
                 'expires' => '2021-02-14',
@@ -81,8 +81,6 @@ class ChHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseCreartDotCh()
@@ -90,16 +88,16 @@ class ChHandlerTest extends AbstractHandler
         $query = 'creart.ch';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'CREART.CH',
+            'domain' => [
+                'name' => 'CREART.CH',
                 'changed' => '2020-08-03',
                 'created' => '2011-06-14',
                 'expires' => '2021-06-14',
@@ -113,8 +111,6 @@ class ChHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseBlaueskreuzDotCh()
@@ -122,16 +118,16 @@ class ChHandlerTest extends AbstractHandler
         $query = 'blaueskreuz.ch';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'BLAUESKREUZ.CH',
+            'domain' => [
+                'name' => 'BLAUESKREUZ.CH',
                 'changed' => '2020-08-03',
                 'created' => '2011-06-14',
                 'expires' => '2021-06-14',

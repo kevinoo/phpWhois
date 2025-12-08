@@ -2,10 +2,14 @@
 
 namespace Tests;
 
+use PHPUnit\Framework\TestCase;
 use phpWhois\WhoisClient;
 
-
-class WhoisClientTest extends \PHPUnit\Framework\TestCase
+/**
+ * @internal
+ * @coversNothing
+ */
+class WhoisClientTest extends TestCase
 {
     public function testVersion()
     {
@@ -14,7 +18,7 @@ class WhoisClientTest extends \PHPUnit\Framework\TestCase
         if (method_exists($this, 'assertMatchesRegularExpression')) {
             $this->assertMatchesRegularExpression('/^(\d+)\.(\d+)\.(\d+)(-\w+)*$/', $client->codeVersion);
         } else {
-            /**
+            /*
              * Deprecated in PHPUnit 9
              * @noinspection PhpUnitDeprecatedCallsIn10VersionInspection
              * @noinspection PhpDeprecationInspection
@@ -25,6 +29,8 @@ class WhoisClientTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider serversProvider
+     * @param mixed $server
+     * @param mixed $result
      */
     public function testParseServer($server, $result)
     {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License, version 2
  * @license
@@ -15,7 +16,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
@@ -25,29 +25,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\UkHandler;
 
 /**
- * UkHandlerTest
+ * UkHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class UkHandlerTest extends AbstractHandler
 {
     /**
-     * @var UkHandler $handler
+     * @var UkHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new UkHandler();
+        $this->handler = new UkHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseVibrantDigitalFutureDotUk()
@@ -55,17 +53,17 @@ class UkHandlerTest extends AbstractHandler
         $query = 'vibrantdigitalfuture.uk';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            "rawdata"  => $fixture,
-            "regyinfo" => [],
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-				'created' => '2024-10-24',
-				'expires' => '2025-10-24',
+            'domain' => [
+                'created' => '2024-10-24',
+                'expires' => '2025-10-24',
                 'changed' => '2025-10-31',
             ],
             'registered' => 'no',
@@ -76,8 +74,6 @@ class UkHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseGoogleDotCoDotUk()
@@ -85,15 +81,15 @@ class UkHandlerTest extends AbstractHandler
         $query = 'google.co.uk';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            "rawdata"  => $fixture,
-            "regyinfo" => [],
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
+            'domain' => [
                 // 'name'    => 'google.co.uk',
                 'created' => '1999-02-14',
                 'expires' => '2026-02-14',
@@ -107,8 +103,6 @@ class UkHandlerTest extends AbstractHandler
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseOlsnsDotCoDotUk()
@@ -116,15 +110,15 @@ class UkHandlerTest extends AbstractHandler
         $query = 'olsns.co.uk';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            "rawdata"  => $fixture,
-            "regyinfo" => [],
+        $data = [
+            'rawdata' => $fixture,
+            'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
+            'domain' => [
                 // 'name'    => 'olsns.co.uk',
                 'created' => '2001-02-21',
                 'expires' => '2026-02-21',

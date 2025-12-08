@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2020 Joshua Smith
  * @license   See LICENSE file
@@ -10,29 +11,27 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use phpWhois\Handlers\TLD\BizHandler;
 
 /**
- * BizHandlerTest
+ * BizHandlerTest.
+ *
+ * @internal
+ * @coversNothing
  */
 class BizHandlerTest extends AbstractHandler
 {
     /**
-     * @var BizHandler $handler
+     * @var BizHandler
      */
     protected $handler;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler            = new BizHandler();
+        $this->handler = new BizHandler();
         $this->handler->deepWhois = false;
     }
 
     /**
-     * @return void
-     *
      * @test
      */
     public function parseNeulevelDotBiz()
@@ -40,16 +39,16 @@ class BizHandlerTest extends AbstractHandler
         $query = 'neulevel.biz';
 
         $fixture = $this->loadFixture($query);
-        $data    = [
-            'rawdata'  => $fixture,
+        $data = [
+            'rawdata' => $fixture,
             'regyinfo' => [],
         ];
 
         $actual = $this->handler->parse($data, $query);
 
         $expected = [
-            'domain'     => [
-                'name'    => 'neulevel.biz',
+            'domain' => [
+                'name' => 'neulevel.biz',
                 'changed' => '2025-10-24',
                 'created' => '2001-09-30',
                 'expires' => '2025-11-06',
