@@ -582,7 +582,7 @@ class WhoisClient
         $dns = [];
 
         foreach ($nserver as $val) {
-            $val = str_replace(array('[', ']', '(', ')', "\t"), array('', '', '', '', ' '), trim($val));
+            $val = str_replace(['[', ']', '(', ')', "\t"], ['', '', '', '', ' '], trim($val));
             $parts = explode(' ', $val);
             $host = '';
             $ip = '';
