@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__ONLINENIC_HANDLER__')) {
     define('__ONLINENIC_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class onlinenic_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'owner' => 'Registrant:',
             'admin' => 'Administrator:',
             'tech' => 'Technical Contactor:',
@@ -46,10 +43,10 @@ class onlinenic_handler
             'domain.nserver' => 'Domain servers in listed order:',
             'domain.created' => 'Record created on ',
             'domain.expires' => 'Record expired on ',
-            'domain.changed' => 'Record last updated at '
-        );
+            'domain.changed' => 'Record last updated at ',
+        ];
 
-        $extra = array(
+        $extra = [
             'tel--' => 'phone',
             'tel:' => 'phone',
             'tel --:' => 'phone',
@@ -64,18 +61,18 @@ class onlinenic_handler
             'city:' => 'address.city',
             'province:' => '',
             ',province:' => '',
-            ',country:' => 'address.country'
-        );
+            ',country:' => 'address.country',
+        ];
 
         $r = easy_parser($data_str, $items, 'mdy', $extra, false, true);
 
         foreach ($r as $key => $part) {
             if (isset($part['email'])) {
-                @list($email, $phone) = explode(' ', $part['email']);
+                @[$email, $phone] = explode(' ', $part['email']);
                 $email = str_replace('(', '', $email);
                 $email = str_replace(')', '', $email);
                 $r[$key]['email'] = $email;
-                if ($phone != '') {
+                if ('' != $phone) {
                     $r[$key]['phone'] = $phone;
                 }
             }

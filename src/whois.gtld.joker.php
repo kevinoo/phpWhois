@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__JOKER_HANDLER__')) {
     define('__JOKER_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class joker_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $translate = array(
+        $translate = [
             'contact-hdl' => 'handle',
             'modified' => 'changed',
             'reseller' => 'sponsor',
@@ -46,22 +43,22 @@ class joker_handler
             'state' => 'address.state',
             'country' => 'address.country',
             'person' => 'name',
-            'domain' => 'name'
-        );
+            'domain' => 'name',
+        ];
 
-        $contacts = array(
+        $contacts = [
             'admin-c' => 'admin',
             'tech-c' => 'tech',
-            'billing-c' => 'billing'
-        );
+            'billing-c' => 'billing',
+        ];
 
-        $items = array(
+        $items = [
             'owner' => 'name',
             'organization' => 'organization',
             'email' => 'email',
             'phone' => 'phone',
             'address' => 'address',
-        );
+        ];
 
         $r = generic_parser_a($data_str, $translate, $contacts, 'domain', 'Ymd');
 

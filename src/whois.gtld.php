@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link      http://phpwhois.pw
+ * @see      http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__GTLD_HANDLER__')) {
     define('__GTLD_HANDLER__', 1);
 }
@@ -33,37 +31,36 @@ require_once 'whois.parser.php';
 
 class gtld_handler extends WhoisClient
 {
-    /**
-     * @var array $result
-     */
-    protected $result;
-
-    const REG_FIELDS = [
-        'Domain Name:'          => 'regrinfo.domain.name',
-        'Registrar:'            => 'regyinfo.registrar',
-        'Whois Server:'         => 'regyinfo.whois',
-        'Referral URL:'         => 'regyinfo.referrer',
-        'Name Server:'          => 'regrinfo.domain.nserver.', // identical descriptors
-        'Updated Date:'         => 'regrinfo.domain.changed',
-        'Last Updated On:'      => 'regrinfo.domain.changed',
-        'EPP Status:'           => 'regrinfo.domain.epp_status.',
-        'Status:'               => 'regrinfo.domain.status.',
-        'Creation Date:'        => 'regrinfo.domain.created',
-        'Created On:'           => 'regrinfo.domain.created',
-        'Expiration Date:'      => 'regrinfo.domain.expires',
+    public const REG_FIELDS = [
+        'Domain Name:' => 'regrinfo.domain.name',
+        'Registrar:' => 'regyinfo.registrar',
+        'Whois Server:' => 'regyinfo.whois',
+        'Referral URL:' => 'regyinfo.referrer',
+        'Name Server:' => 'regrinfo.domain.nserver.', // identical descriptors
+        'Updated Date:' => 'regrinfo.domain.changed',
+        'Last Updated On:' => 'regrinfo.domain.changed',
+        'EPP Status:' => 'regrinfo.domain.epp_status.',
+        'Status:' => 'regrinfo.domain.status.',
+        'Creation Date:' => 'regrinfo.domain.created',
+        'Created On:' => 'regrinfo.domain.created',
+        'Expiration Date:' => 'regrinfo.domain.expires',
         'Registry Expiry Date:' => 'regrinfo.domain.expires',
-        'No match for '         => 'nodomain',
+        'No match for ' => 'nodomain',
     ];
 
     /**
-     * @param array $data
-     * @param string $query
-     *
+     * @var array
+     */
+    protected $result;
+
+    /**
+     * @param  array  $data
+     * @param  string $query
      * @return array
      */
     public function parse($data, $query)
     {
-        $this->query  = [];
+        $this->query = [];
         $this->result = generic_parser_b($data['rawdata'], self::REG_FIELDS, 'dmy');
 
         unset($this->result['registered']);

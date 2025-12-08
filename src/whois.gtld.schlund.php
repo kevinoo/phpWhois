@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__SCHLUND_HANDLER__')) {
     define('__SCHLUND_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class schlund_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'created:' => 'domain.created',
             'last-changed:' => 'domain.changed',
             'status:' => 'domain.status',
@@ -79,8 +76,8 @@ class schlund_handler
             'bill-c-city:' => 'billing.address.city',
             'bill-c-ccode:' => 'billing.address.country',
             'bill-c-phone:' => 'billing.phone',
-            'bill-c-email:' => 'billing.email'
-        );
+            'bill-c-email:' => 'billing.email',
+        ];
 
         return generic_parser_b($data_str, $items);
     }

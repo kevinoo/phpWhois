@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__FASTDOMAIN_HANDLER__')) {
     define('__FASTDOMAIN_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class fastdomain_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'owner' => 'Registrant Info:',
             'admin' => 'Administrative Info:',
             'tech' => 'Technical Info:',
@@ -47,8 +44,8 @@ class fastdomain_handler
             'domain.created' => 'Created on..............:',
             'domain.expires' => 'Expires on..............:',
             'domain.changed' => 'Last modified on........:',
-            'domain.status' => 'Status:'
-        );
+            'domain.status' => 'Status:',
+        ];
 
         foreach ($data_str as $key => $val) {
             $faststr = strpos($val, ' (FAST-');
@@ -57,7 +54,7 @@ class fastdomain_handler
             }
         }
 
-        $r = easy_parser($data_str, $items, 'dmy', array(), false, true);
+        $r = easy_parser($data_str, $items, 'dmy', [], false, true);
 
         if (isset($r['domain']['sponsor']) && is_array($r['domain']['sponsor'])) {
             $r['domain']['sponsor'] = $r['domain']['sponsor'][0];
@@ -65,7 +62,7 @@ class fastdomain_handler
 
         if (isset($r['domain']['nserver'])) {
             foreach (${$r['domain']['nserver']} as $key => $val) {
-                if ($val === '=-=-=-=') {
+                if ('=-=-=-=' === $val) {
                     unset($r['domain']['nserver'][$key]);
                 }
             }

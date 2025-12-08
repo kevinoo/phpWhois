@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__NAMEKING_HANDLER__')) {
     define('__NAMEKING_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class nameking_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'owner' => 'Registrant',
             'admin' => 'Admin Contact',
             'tech' => 'Tech Contact',
@@ -44,9 +41,9 @@ class nameking_handler
             'domain.sponsor' => 'Registration Provided By:',
             'domain.created' => 'Creation Date:',
             'domain.expires' => 'Expiration Date:',
-        );
+        ];
 
-        $extra = array(
+        $extra = [
             'tel--' => 'phone',
             'tel:' => 'phone',
             'tel --:' => 'phone',
@@ -63,8 +60,8 @@ class nameking_handler
             ',province:' => '',
             ',country:' => 'address.country',
             'organization:' => 'organization',
-            'city, province, post code:' => 'address.city'
-        );
+            'city, province, post code:' => 'address.city',
+        ];
 
         return easy_parser($data_str, $items, 'mdy', $extra, false, true);
     }

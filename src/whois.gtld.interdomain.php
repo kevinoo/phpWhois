@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__INTERDOMAIN_HANDLER__')) {
     define('__INTERDOMAIN_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class interdomain_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'Domain Name................' => 'domain.name',
             'Creation Date............' => 'domain.created',
             'Expiry Date..............' => 'domain.expires',
@@ -73,8 +70,8 @@ class interdomain_handler
             'Technical Country........' => 'tech.address.country',
             'Technical Phone..........' => 'tech.phone',
             'Technical e-mail.........' => 'tech.email',
-            'Technical Fax............' => 'tech.fax'
-        );
+            'Technical Fax............' => 'tech.fax',
+        ];
 
         return generic_parser_b($data_str, $items, 'dmy');
     }

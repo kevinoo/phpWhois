@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__NAMES4EVER_HANDLER__')) {
     define('__NAMES4EVER_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class names4ever_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'owner' => 'Registrant:',
             'admin' => 'Administrative Contact',
             'tech' => 'Technical  Contact',
@@ -47,9 +44,9 @@ class names4ever_handler
             'domain.created' => 'Record created on',
             'domain.expires' => 'Record expires on',
             'domain.changed' => 'Record last updated on',
-            'domain.status' => 'Domain status:'
-        );
+            'domain.status' => 'Domain status:',
+        ];
 
-        return easy_parser($data_str, $items, 'dmy', array(), false, true);
+        return easy_parser($data_str, $items, 'dmy', [], false, true);
     }
 }

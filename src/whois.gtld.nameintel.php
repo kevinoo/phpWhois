@@ -16,13 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  */
-
 if (!defined('__NAMEINTEL_HANDLER__')) {
     define('__NAMEINTEL_HANDLER__', 1);
 }
@@ -31,12 +29,11 @@ require_once 'whois.parser.php';
 
 class nameintel_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'owner' => 'Registrant Contact:',
             'admin' => 'Administrative Contact:',
             'tech' => 'Technical Contact',
@@ -44,10 +41,10 @@ class nameintel_handler
             'domain.status' => 'Status:',
             'domain.nserver' => 'Name Server:',
             'domain.created' => 'Creation Date:',
-            'domain.expires' => 'Expiration Date:'
-        );
+            'domain.expires' => 'Expiration Date:',
+        ];
 
-        $r = easy_parser($data_str, $items, 'dmy', array(), false, true);
+        $r = easy_parser($data_str, $items, 'dmy', [], false, true);
 
         if (isset($r['domain']['sponsor']) && is_array($r['domain']['sponsor'])) {
             $r['domain']['sponsor'] = $r['domain']['sponsor'][0];
@@ -59,6 +56,7 @@ class nameintel_handler
                 $r[$key]['address']['country'] = array_pop($r[$key]['address']);
             }
         }
+
         return $r;
     }
 }

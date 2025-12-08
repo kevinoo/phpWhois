@@ -16,8 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *
- * @link http://phpwhois.pw
+ * @see http://phpwhois.pw
  * @copyright Copyright (C)1999,2005 easyDNS Technologies Inc. & Mark Jeftovic
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
@@ -31,12 +30,11 @@ if (!defined('__MELBOURNEIT_HANDLER__')) {
 
 class melbourneit_handler
 {
-
     public $deepWhois = false;
 
     public function parse($data_str, $query)
     {
-        $items = array(
+        $items = [
             'Domain Name..........' => 'domain.name',
             'Registration Date....' => 'domain.created',
             'Expiry Date..........' => 'domain.expires',
@@ -52,8 +50,8 @@ class melbourneit_handler
             'Tech Email...........' => 'tech.email',
             'Tech Phone...........' => 'tech.phone',
             'Tech Fax.............' => 'tech.fax',
-            'Name Server..........' => 'domain.nserver.'
-        );
+            'Name Server..........' => 'domain.nserver.',
+        ];
 
         return generic_parser_b($data_str, $items, 'ymd');
     }
