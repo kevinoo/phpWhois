@@ -50,7 +50,7 @@ class IpHandler extends WhoisClient
         ];
         $result['regyinfo']['registrar'] = 'American Registry for Internet Numbers (ARIN)';
 
-        if (false === strpos($query, '.')) {
+        if (strpos($query, '.') === false) {
             $result['regyinfo']['type'] = 'AS';
         } else {
             $result['regyinfo']['type'] = 'ip';
@@ -86,11 +86,11 @@ class IpHandler extends WhoisClient
 
                 $p = strpos($line, '(NETBLK-');
 
-                if (false === $p) {
+                if ($p === false) {
                     $p = strpos($line, '(NET-');
                 }
 
-                if (false !== $p) {
+                if ($p !== false) {
                     $net = strtok(substr($line, $p + 1), ') ');
                     $clearedLine = str_replace(' ', '', substr($line, $p + strlen($net) + 3));
                     if ('' !== $clearedLine) {

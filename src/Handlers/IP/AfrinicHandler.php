@@ -60,7 +60,7 @@ class AfrinicHandler extends AbstractHandler
             foreach ($r['owner']['remarks'] as $val) {
                 $pos = strpos($val, 'rwhois://');
 
-                if (false !== $pos) {
+                if ($pos !== false) {
                     $r['rwhois'] = strtok(substr($val, $pos), ' ');
                 }
             }

@@ -58,22 +58,22 @@ class IlHandler extends AbstractHandler
         if (isset($reg['domain']['descr:'])) {
             foreach ($reg['domain']['descr:'] as $key => $val) {
                 $v = trim(substr(strstr($val, ':'), 1));
-                if (false !== strpos($val, '[organization]:')) {
+                if (strpos($val, '[organization]:') !== false) {
                     $reg['owner']['organization'] = $v;
 
                     continue;
                 }
-                if (false !== strpos($val, '[phone]:')) {
+                if (strpos($val, '[phone]:') !== false) {
                     $reg['owner']['phone'] = $v;
 
                     continue;
                 }
-                if (false !== strpos($val, '[fax-no]:')) {
+                if (strpos($val, '[fax-no]:') !== false) {
                     $reg['owner']['fax'] = $v;
 
                     continue;
                 }
-                if (false !== strpos($val, '[e-mail]:')) {
+                if (strpos($val, '[e-mail]:') !== false) {
                     $reg['owner']['email'] = $v;
 
                     continue;

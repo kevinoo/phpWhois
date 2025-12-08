@@ -32,10 +32,10 @@ class ZanetHandler extends AbstractHandler
 
         $rawdata = [];
         foreach ($data_str['rawdata'] as $line) {
-            if (false !== strpos($line, ' Contact ')) {
+            if (strpos($line, ' Contact ') !== false) {
                 $pos = strpos($line, ':');
 
-                if (false !== $pos) {
+                if ($pos !== false) {
                     $rawdata[] = substr($line, 0, $pos + 1);
                     $rawdata[] = trim(substr($line, $pos + 1));
 

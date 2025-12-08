@@ -52,7 +52,7 @@ class NuHandler extends AbstractHandler
                 }
 
                 foreach ($items as $field => $match) {
-                    if (false !== strpos($val, $match)) {
+                    if (strpos($val, $match) !== false) {
                         $r['regrinfo']['domain'][$field] = trim(substr($val, strlen($match)));
 
                         break;

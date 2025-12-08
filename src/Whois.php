@@ -350,10 +350,10 @@ class Whois extends WhoisClient
 
             return self::QTYPE_UNKNOWN;
         }
-        if (!empty($query) && false !== strpos($query, '.')) {
+        if (!empty($query) && strpos($query, '.') !== false) {
             return self::QTYPE_DOMAIN;
         }
-        if (!empty($query) && false === strpos($query, '.')) {
+        if (!empty($query) && strpos($query, '.') === false) {
             return self::QTYPE_AS;
         }
 
