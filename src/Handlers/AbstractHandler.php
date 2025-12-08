@@ -151,7 +151,7 @@ abstract class AbstractHandler implements HandlerInterface
                     continue;
                 }
                 if (strpos($k, '.') !== false) {
-                    $block = assign($block, $k, $v);
+                    $block = static::assign($block, $k, $v);
 
                     continue;
                 }
@@ -399,7 +399,7 @@ abstract class AbstractHandler implements HandlerInterface
                             $itm = trim(substr($val, $pos + strlen($match)));
 
                             if ($itm !== '') {
-                                $r = assign($r, $field, str_replace('"', '\"', $itm));
+                                $r = static::assign($r, $field, str_replace('"', '\"', $itm));
                             }
                         }
 
@@ -638,7 +638,7 @@ abstract class AbstractHandler implements HandlerInterface
                     $itm = trim(substr($val, $pos + strlen($match)));
 
                     if ($field !== '' && $itm !== '') {
-                        $r = assign($r, $field, $itm);
+                        $r = static::assign($r, $field, $itm);
                     }
 
                     $val = trim(substr($val, 0, $pos));
