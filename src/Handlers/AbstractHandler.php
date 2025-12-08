@@ -7,62 +7,39 @@
 
 namespace phpWhois\Handlers;
 
-use DateTime;
-use DateTimeZone;
-use UnexpectedValueException;
-
-require_once __DIR__ . '/../whois.parser.php';
-
 /**
- * AbstractHandler
+ * AbstractHandler.
  */
 abstract class AbstractHandler implements HandlerInterface
 {
     public $deepWhois;
 
     /**
-     * @param string[] $lines
-     * @return string[]
-     */
-    protected function removeBlankLines(array $lines): array
-    {
-        return array_filter($lines);
-    }
-
-    /**
-     * @param array $data_str
-     * @param array $items
-     * @param string $date_format
-     * @param array $translate
-     * @param bool $has_org
-     * @param bool $partial_match
-     * @param bool $def_block
      * @return mixed
      */
-    public static function easyParser( array $data_str, array $items, string $date_format, array $translate = [], bool $has_org=false, bool $partial_match=false, bool $def_block=false ){
+    public static function easyParser(array $data_str, array $items, string $date_format, array $translate = [], bool $has_org = false, bool $partial_match = false, bool $def_block = false)
+    {
         $r = static::getBlocks($data_str, $items, $partial_match, $def_block);
         $r = static::getContacts($r, $translate, $has_org);
         static::formatDates($r, $date_format);
+
         return $r;
     }
 
     /**
-     * @param mixed  $res
-     * @param string $format
-     * @return array
+     * @param mixed $res
      */
-    public static function formatDates(&$res, string $format='mdy'): array
+    public static function formatDates(&$res, string $format = 'mdy'): array
     {
         if (!is_array($res)) {
             return $res;
         }
 
         foreach ($res as $key => $val) {
+            $key_to_ignore = (!is_numeric($key) && ('expires' === $key || 'created' === $key || 'changed' === $key));
 
-            $key_to_ignore = (!is_numeric($key) && ($key === 'expires' || $key === 'created' || $key === 'changed'));
-
-            if( is_array($val) ){
-                if( $key_to_ignore ) {
+            if (is_array($val)) {
+                if ($key_to_ignore) {
                     $d = static::getDate($val[0], $format);
                     if ($d) {
                         $res[$key] = $d;
@@ -70,9 +47,9 @@ abstract class AbstractHandler implements HandlerInterface
                 } else {
                     $res[$key] = static::formatDates($val, $format);
                 }
-            } elseif( $key_to_ignore ){
+            } elseif ($key_to_ignore) {
                 $d = static::getDate($val, $format);
-                if( $d ){
+                if ($d) {
                     $res[$key] = $d;
                 }
             }
@@ -81,26 +58,19 @@ abstract class AbstractHandler implements HandlerInterface
         return $res;
     }
 
-    /**
-     * @param  array  $rawdata
-     * @param  array  $translate
-     * @param  array  $contacts
-     * @param  string $main
-     * @param  string $dateformat
-     * @return array
-     */
-    public static function generic_parser_a(array $rawdata, array $translate, array $contacts, string $main='domain', string $dateformat='dmy'): array
+    public static function generic_parser_a(array $rawdata, array $translate, array $contacts, string $main = 'domain', string $dateformat = 'dmy'): array
     {
         $disclaimer = [];
         $blocks = static::generic_parser_a_blocks($rawdata, $translate, $disclaimer);
 
-        $ret = array();
+        $ret = [];
         if (isset($disclaimer) && is_array($disclaimer)) {
             $ret['disclaimer'] = $disclaimer;
         }
 
         if (empty($blocks) || !is_array($blocks['main'])) {
             $ret['registered'] = 'no';
+
             return $ret;
         }
 
@@ -128,16 +98,14 @@ abstract class AbstractHandler implements HandlerInterface
         }
 
         static::formatDates($ret, $dateformat);
+
         return $ret;
     }
 
     /**
-     * @param array $rawdata
-     * @param array $translate
-     * @param array|null $disclaimer
-     * @return array
+     * @param null|array $disclaimer
      */
-    public static function generic_parser_a_blocks(array $rawdata, array $translate, array &$disclaimer=[]): array
+    public static function generic_parser_a_blocks(array $rawdata, array $translate, array &$disclaimer = []): array
     {
         $newblock = false;
         $hasdata = false;
@@ -149,14 +117,16 @@ abstract class AbstractHandler implements HandlerInterface
         foreach ($rawdata as $val) {
             $val = trim($val);
 
-            if ($val !== '' && ($val[0] === '%' || $val[0] === '#')) {
+            if ('' !== $val && ('%' === $val[0] || '#' === $val[0])) {
                 if (!$dend) {
                     $disclaimer[] = trim(substr($val, 1));
                 }
+
                 continue;
             }
-            if ($val === '') {
+            if ('' === $val) {
                 $newblock = true;
+
                 continue;
             }
             if ($newblock && $hasdata) {
@@ -169,7 +139,7 @@ abstract class AbstractHandler implements HandlerInterface
             $k = trim(strtok($val, ':'));
             $v = trim(substr(strstr($val, ':'), 1));
 
-            if ($v === '') {
+            if ('' === $v) {
                 continue;
             }
 
@@ -177,27 +147,28 @@ abstract class AbstractHandler implements HandlerInterface
 
             if (isset($translate[$k])) {
                 $k = $translate[$k];
-                if ($k === '') {
+                if ('' === $k) {
                     continue;
                 }
-                if (strpos($k, '.') !== false) {
-                    $block = assign($block, $k, $v);
+                if (false !== strpos($k, '.')) {
+                    $block = static::assign($block, $k, $v);
+
                     continue;
                 }
             } else {
                 $k = strtolower($k);
             }
 
-            if ($k === 'handle') {
+            if ('handle' === $k) {
                 $v = strtok($v, ' ');
                 $gkey = strtoupper($v);
             }
 
-            if( isset($block[$k]) && is_array($block[$k]) ){
+            if (isset($block[$k]) && is_array($block[$k])) {
                 $block[$k][] = $v;
-            }elseif( empty($block[$k]) ){
+            } elseif (empty($block[$k])) {
                 $block[$k] = $v;
-            }else{
+            } else {
                 $x = $block[$k];
                 unset($block[$k]);
                 $block[$k][] = $x;
@@ -212,17 +183,9 @@ abstract class AbstractHandler implements HandlerInterface
         return $blocks;
     }
 
-    /**
-     * @param array $rawdata
-     * @param array $items
-     * @param string $dateformat
-     * @param bool $hasreg
-     * @param bool $scanall
-     * @return array
-     */
-    public static function generic_parser_b( array $rawdata, array $items=[], string $dateformat='mdy', bool $hasreg=true, bool $scanall=false): array
+    public static function generic_parser_b(array $rawdata, array $items = [], string $dateformat = 'mdy', bool $hasreg = true, bool $scanall = false): array
     {
-        if( empty($items) ){
+        if (empty($items)) {
             $items = [
                 'Domain Name:' => 'domain.name',
                 'Domain ID:' => 'domain.handle',
@@ -409,7 +372,7 @@ abstract class AbstractHandler implements HandlerInterface
                 'Zone Country:' => 'zone.address.country',
                 'Zone Phone Number:' => 'zone.phone',
                 'Zone Fax Number:' => 'zone.fax',
-                'Zone Email:' => 'zone.email'
+                'Zone Email:' => 'zone.email',
             ];
         }
 
@@ -417,10 +380,11 @@ abstract class AbstractHandler implements HandlerInterface
         $disok = true;
 
         foreach ($rawdata as $val) {
-            if (trim($val) !== '') {
-                if (($val[0] === '%' || $val[0] === '#') && $disok) {
+            if ('' !== trim($val)) {
+                if (('%' === $val[0] || '#' === $val[0]) && $disok) {
                     $r['disclaimer'][] = trim(substr($val, 1));
                     $disok = true;
+
                     continue;
                 }
 
@@ -430,12 +394,12 @@ abstract class AbstractHandler implements HandlerInterface
                 foreach ($items as $match => $field) {
                     $pos = strpos($val, $match);
 
-                    if ($pos !== false) {
-                        if ($field !== '') {
+                    if (false !== $pos) {
+                        if ('' !== $field) {
                             $itm = trim(substr($val, $pos + strlen($match)));
 
-                            if ($itm !== '') {
-                                $r = assign($r, $field, str_replace('"', '\"', $itm));
+                            if ('' !== $itm) {
+                                $r = static::assign($r, $field, str_replace('"', '\"', $itm));
                             }
                         }
 
@@ -462,27 +426,19 @@ abstract class AbstractHandler implements HandlerInterface
         return $r;
     }
 
-    /**
-     * @param array $rawdata
-     * @param array $items
-     * @param bool  $partial_match
-     * @param bool  $def_block
-     * @return array
-     */
-    public static function getBlocks( array $rawdata, array $items, bool $partial_match=false, bool $def_block=false ): array
+    public static function getBlocks(array $rawdata, array $items, bool $partial_match = false, bool $def_block = false): array
     {
         $r = [];
         $endtag = '';
 
         while ($val = current($rawdata)) {
-
-            if( next($rawdata) === false ){
+            if (false === next($rawdata)) {
                 // No more data
                 break;
             }
 
             $val = trim($val);
-            if ($val === '') {
+            if ('' === $val) {
                 continue;
             }
 
@@ -491,23 +447,24 @@ abstract class AbstractHandler implements HandlerInterface
             foreach ($items as $field => $match) {
                 $pos = strpos($val, $match);
 
-                if ($field !== '' && $pos !== false) {
+                if ('' !== $field && false !== $pos) {
                     if ($val === $match) {
                         $found = true;
                         $endtag = '';
                         $line = $val;
+
                         break;
                     }
 
                     $last = $val[strlen($val) - 1];
 
-                    if ($last === ':' || $last === '-' || $last === ']') {
+                    if (':' === $last || '-' === $last || ']' === $last) {
                         $found = true;
                         $endtag = $last;
                         $line = $val;
                     } else {
                         $var = strtok($field, '#');
-                        $r   = assign($r, $var, trim(substr($val, $pos + strlen($match))));
+                        $r = static::assign($r, $var, trim(substr($val, $pos + strlen($match))));
                     }
 
                     break;
@@ -518,36 +475,37 @@ abstract class AbstractHandler implements HandlerInterface
                 if (!$var && $def_block) {
                     $r[$def_block][] = $val;
                 }
+
                 continue;
             }
 
-            $block = array();
+            $block = [];
 
             // Block found, get data ...
             while ($val = current($rawdata)) {
-
-                if( next($rawdata) === false ){
+                if (false === next($rawdata)) {
                     // No more data
                     break;
                 }
 
                 $val = trim($val);
 
-                if ($val === '' || $val === str_repeat($val[0], strlen($val))) {
+                if ('' === $val || $val === str_repeat($val[0], strlen($val))) {
                     continue;
                 }
 
                 $last = $val[strlen($val) - 1];
 
-                if ($endtag === '' || $partial_match || $last === $endtag) {
-                    //Check if this line starts another block
+                if ('' === $endtag || $partial_match || $last === $endtag) {
+                    // Check if this line starts another block
                     $et = false;
 
                     foreach ($items as $field => $match) {
                         $pos = strpos($val, $match);
 
-                        if ($pos !== false && $pos === 0) {
+                        if (false !== $pos && 0 === $pos) {
                             $et = true;
+
                             break;
                         }
                     }
@@ -555,6 +513,7 @@ abstract class AbstractHandler implements HandlerInterface
                     if ($et) {
                         // Another block found
                         prev($rawdata);
+
                         break;
                     }
                 }
@@ -569,10 +528,10 @@ abstract class AbstractHandler implements HandlerInterface
             foreach ($items as $field => $match) {
                 $pos = strpos($line, $match);
 
-                if ($pos !== false) {
+                if (false !== $pos) {
                     $var = strtok($field, '#');
-                    if ($var !== '[]') {
-                        $r = assign($r, $var, $block);
+                    if ('[]' !== $var) {
+                        $r = static::assign($r, $var, $block);
                     }
                 }
             }
@@ -582,13 +541,10 @@ abstract class AbstractHandler implements HandlerInterface
     }
 
     /**
-     * @param       $array
-     * @param array $extra_items
-     * @param bool  $has_org
-     *
+     * @param  mixed $array
      * @return mixed
      */
-    public static function getContacts($array, array $extra_items=[], bool $has_org=false)
+    public static function getContacts($array, array $extra_items = [], bool $has_org = false)
     {
         if (isset($array['billing'])) {
             $array['billing'] = static::getContact($array['billing'], $extra_items, $has_org);
@@ -617,16 +573,10 @@ abstract class AbstractHandler implements HandlerInterface
         return $array;
     }
 
-    /**
-     * @param       $array
-     * @param array $extra_items
-     * @param bool  $has_org
-     * @return array
-     */
-    public static function getContact($array, array $extra_items=[], bool $has_org=false): array
+    public static function getContact($array, array $extra_items = [], bool $has_org = false): array
     {
         if (!is_array($array)) {
-            return array();
+            return [];
         }
 
         $items = [
@@ -658,7 +608,7 @@ abstract class AbstractHandler implements HandlerInterface
             'location:' => 'address.city',
             'country:' => 'address.country',
             'name:' => 'name',
-            'last modified:' => 'changed'
+            'last modified:' => 'changed',
         ];
 
         if (is_array($extra_items) && count($extra_items)) {
@@ -679,22 +629,23 @@ abstract class AbstractHandler implements HandlerInterface
                 $ok = false;
 
                 foreach ($items as $match => $field) {
-                    $pos = stripos($val,$match);
+                    $pos = stripos($val, $match);
 
-                    if ($pos === false) {
+                    if (false === $pos) {
                         continue;
                     }
 
                     $itm = trim(substr($val, $pos + strlen($match)));
 
-                    if ($field !== '' && $itm !== '') {
-                        $r = assign($r, $field, $itm);
+                    if ('' !== $field && '' !== $itm) {
+                        $r = static::assign($r, $field, $itm);
                     }
 
                     $val = trim(substr($val, 0, $pos));
 
-                    if ($val === '') {
+                    if ('' === $val) {
                         unset($array[$key]);
+
                         break;
                     }
 
@@ -702,7 +653,7 @@ abstract class AbstractHandler implements HandlerInterface
                     $ok = true;
                 }
 
-                if (preg_match("/([+]*[-(). x0-9]){7,}/", $val, $matches)) {
+                if (preg_match('/([+]*[-(). x0-9]){7,}/', $val, $matches)) {
                     $phone = trim(str_replace(' ', '', $matches[0]));
 
                     if (strlen($phone) > 8 && !preg_match('/\d{5}-\d{3}/', $phone)) {
@@ -717,8 +668,9 @@ abstract class AbstractHandler implements HandlerInterface
 
                         $val = str_replace($matches[0], '', $val);
 
-                        if ($val === '') {
+                        if ('' === $val) {
                             unset($array[$key]);
+
                             continue;
                         }
 
@@ -733,8 +685,9 @@ abstract class AbstractHandler implements HandlerInterface
                     $val = str_replace($matches[0], '', $val);
                     $val = trim(str_replace('()', '', $val));
 
-                    if ($val === '') {
+                    if ('' === $val) {
                         unset($array[$key]);
+
                         continue;
                     }
 
@@ -759,7 +712,7 @@ abstract class AbstractHandler implements HandlerInterface
         }
 
         if (isset($r['name']) && is_array($r['name'])) {
-            $r['name'] = implode(' ',$r['name']);
+            $r['name'] = implode(' ', $r['name']);
         }
 
         if (!empty($array)) {
@@ -774,37 +727,14 @@ abstract class AbstractHandler implements HandlerInterface
     }
 
     /**
-     * @param array $rawData
-     *
-     * @return array
-     */
-    protected function parseRegistryInfo(array $rawData): array
-    {
-        $registryItems = [
-            'Registrar URL:'                 => 'referrer',
-            'Registrar Name:'                => 'registrar',
-            'Registrar:'                     => 'registrar',
-            'Registrar Abuse Contact Email:' => 'abuse.email',
-            'Registrar Abuse Contact Phone:' => 'abuse.phone',
-            'Registrar WHOIS Server:'        => 'whois',
-        ];
-
-        $registryInfo = static::generic_parser_b($rawData, $registryItems);
-        unset($registryInfo['registered']);
-
-        return $registryInfo;
-    }
-
-    /**
-     * @param $date
-     * @param $format
-     *
-     * @return string|array
+     * @param  mixed        $date
+     * @param  mixed        $format
+     * @return array|string
      */
     public static function getDate($date, $format)
     {
         $parsedDate = static::parseStandardDate($date);
-        if ($parsedDate instanceof DateTime) {
+        if ($parsedDate instanceof \DateTime) {
             return $parsedDate->format('Y-m-d');
         }
 
@@ -829,7 +759,7 @@ abstract class AbstractHandler implements HandlerInterface
 
         $parts = explode(' ', $date);
 
-        if (strpos($parts[0], '@') !== false) {
+        if (false !== strpos($parts[0], '@')) {
             unset($parts[0]);
             $date = implode(' ', $parts);
         }
@@ -837,31 +767,31 @@ abstract class AbstractHandler implements HandlerInterface
         $date = str_replace([',', '.', '-', '/', "\t"], ' ', trim($date));
 
         $parts = explode(' ', $date);
-        $res   = [];
+        $res = [];
 
-        if ((strlen($parts[0]) === 8 || count($parts) === 1) && is_numeric($parts[0])) {
+        if ((8 === strlen($parts[0]) || 1 === count($parts)) && is_numeric($parts[0])) {
             $val = $parts[0];
-            for ($p = $i = 0; $i < 3; $i++) {
-                if ($format[$i] !== 'Y') {
+            for ($p = $i = 0; $i < 3; ++$i) {
+                if ('Y' !== $format[$i]) {
                     $res[$format[$i]] = substr($val, $p, 2);
-                    $p                += 2;
+                    $p += 2;
                 } else {
                     $res['y'] = substr($val, $p, 4);
-                    $p        += 4;
+                    $p += 4;
                 }
             }
         } else {
             $format = strtolower($format);
 
-            for ($p = $i = 0; $p < count($parts) && $i < strlen($format); $p++) {
-                if (trim($parts[$p]) === '') {
+            for ($p = $i = 0; $p < count($parts) && $i < strlen($format); ++$p) {
+                if ('' === trim($parts[$p])) {
                     continue;
                 }
 
-                if ($format[$i] !== '-') {
+                if ('-' !== $format[$i]) {
                     $res[$format[$i]] = $parts[$p];
                 }
-                $i++;
+                ++$i;
             }
         }
 
@@ -875,21 +805,23 @@ abstract class AbstractHandler implements HandlerInterface
             $ok = true;
 
             foreach ($res as $key => $val) {
-                if ($val === '' || $key === '') {
+                if ('' === $val || '' === $key) {
                     continue;
                 }
 
                 if (!is_numeric($val) && isset($months[strtolower(substr($val, 0, 3))])) {
                     $res[$key] = $res['m'];
-                    $res['m']  = $months[strtolower(substr($val, 0, 3))];
-                    $ok        = false;
+                    $res['m'] = $months[strtolower(substr($val, 0, 3))];
+                    $ok = false;
+
                     break;
                 }
 
-                if ($key !== 'y' && $key !== 'Y' && $val > 1900) {
+                if ('y' !== $key && 'Y' !== $key && $val > 1900) {
                     $res[$key] = $res['y'];
-                    $res['y']  = $val;
-                    $ok        = false;
+                    $res['y'] = $val;
+                    $ok = false;
+
                     break;
                 }
             }
@@ -911,18 +843,15 @@ abstract class AbstractHandler implements HandlerInterface
     }
 
     /**
-     * @param string $date
-     *
-     * @return false|DateTime
+     * @return \DateTime|false
      */
     public static function parseStandardDate(string $date)
     {
         $date = trim($date);
-        $UTC = new DateTimeZone('UTC');
+        $UTC = new \DateTimeZone('UTC');
 
         // Must be an array with: "pattern" => "PHP DateTime Format"
         $rules = [
-
             // 2020-01-01T00:00:00.0Z
             '/^(?<datetime>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\.(?<microseconds>\d+)(?<timezone>Z)$/' => 'Y-m-d\TH:i:s.uT',
 
@@ -942,7 +871,7 @@ abstract class AbstractHandler implements HandlerInterface
             '/^(?<datetime>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}) ?(?<timezone>\w+)?$/' => 'Y-m-d H:i:s T',
 
             // 11-May-2016 05:18:45 UTC
-             '/^(?<datetime>\d{2}-[A-Za-z]{3}-\d{4} \d{2}:\d{2}:\d{2}) (?<timezone>\w+)$/' => 'd-M-Y H:i:s T',
+            '/^(?<datetime>\d{2}-[A-Za-z]{3}-\d{4} \d{2}:\d{2}:\d{2}) (?<timezone>\w+)$/' => 'd-M-Y H:i:s T',
 
             // "domain-registrar AT isoc.org.il 20210913" => " 20210913"
             '/ ?(?<datetime>\d{8})( \(?[A-Za-z#\d]+\)?)?$/' => 'Ymd',
@@ -984,47 +913,115 @@ abstract class AbstractHandler implements HandlerInterface
 
             // November  6 2000
             '/^(?<datetime>[A-Z][a-z]+\s+\d{1,2}\s+\d{4})$/' => 'F j Y',
-
         ];
 
-        foreach( $rules as $regex => $dateTimeFormat ){
+        foreach ($rules as $regex => $dateTimeFormat) {
             $matches = [];
 
-			preg_match($regex, $date, $matches);
+            preg_match($regex, $date, $matches);
 
-            if( preg_match($regex, $date, $matches) ){
-
-                if( !empty($matches['microseconds']) && PHP_VERSION_ID <= 80200 ){
+            if (preg_match($regex, $date, $matches)) {
+                if (!empty($matches['microseconds']) && PHP_VERSION_ID <= 80200) {
                     // For PHP <= 8.2, skip milliseconds
                     $date = $matches['datetime'];
+
                     continue;
                 }
 
-                $parsedDate = DateTime::createFromFormat($dateTimeFormat, $date, $UTC);
-                if( $parsedDate instanceof DateTime ){
+                $parsedDate = \DateTime::createFromFormat($dateTimeFormat, $date, $UTC);
+                if ($parsedDate instanceof \DateTime) {
                     return $parsedDate;
                 }
 
-                $parsedDate = DateTime::createFromFormat($dateTimeFormat, $matches['datetime'] ?? $matches[0], $UTC);
-                if( $parsedDate instanceof DateTime ){
+                $parsedDate = \DateTime::createFromFormat($dateTimeFormat, $matches['datetime'] ?? $matches[0], $UTC);
+                if ($parsedDate instanceof \DateTime) {
                     return $parsedDate;
                 }
 
-                if( !empty($matches[1]) ){
+                if (!empty($matches[1])) {
                     // Fallback, try ignoring the TimeZone
-                    $parsedDate = DateTime::createFromFormat('Y-m-d H:i:s', $matches[1], $UTC);
-                    if( $parsedDate instanceof DateTime ){
+                    $parsedDate = \DateTime::createFromFormat('Y-m-d H:i:s', $matches[1], $UTC);
+                    if ($parsedDate instanceof \DateTime) {
                         return $parsedDate;
                     }
                 }
             }
         }
 
-        if( defined('DEBUG_MODE') && DEBUG_MODE ){
-            throw new UnexpectedValueException("DateTime not parsable, value: \"{$date}\" ");
+        if (defined('DEBUG_MODE') && DEBUG_MODE) {
+            throw new \UnexpectedValueException("DateTime not parsable, value: \"{$date}\" ");
         }
 
         return false;
     }
 
+    /**
+     * @param  string[] $lines
+     * @return string[]
+     */
+    protected function removeBlankLines(array $lines): array
+    {
+        return array_filter($lines);
+    }
+
+    protected function parseRegistryInfo(array $rawData): array
+    {
+        $registryItems = [
+            'Registrar URL:' => 'referrer',
+            'Registrar Name:' => 'registrar',
+            'Registrar:' => 'registrar',
+            'Registrar Abuse Contact Email:' => 'abuse.email',
+            'Registrar Abuse Contact Phone:' => 'abuse.phone',
+            'Registrar WHOIS Server:' => 'whois',
+        ];
+
+        $registryInfo = static::generic_parser_b($rawData, $registryItems);
+        unset($registryInfo['registered']);
+
+        return $registryInfo;
+    }
+
+    /**
+     * @param  array    $array The array to populate
+     * @param  string[] $parts
+     * @param  mixed    $value The value to be assigned to the $vDef key
+     * @return array    The updated array
+     * @see https://github.com/sparc/phpWhois.org/compare/18849d1a98b992190612cdb2561e7b4492c505f5...8c6a18686775b25f05592dd67d7706e47167a498#diff-b8adbe1292f8abca1f943aa844db52aa Original fix by David Saez PAdros sparc
+     * @see https://github.com/kevinoo/phpWhois/commit/42b278d47858a06a0c074c24cf2bf5b0fb5742d7
+     */
+    protected static function assignRecursive(array $array, array $parts, $value): array
+    {
+        $key = array_shift($parts);
+
+        if (0 === count($parts)) {
+            if (!$key) {
+                $array[] = $value;
+            } else {
+                $array[$key] = $value;
+            }
+        } else {
+            if (!isset($array[$key])) {
+                $array[$key] = [];
+            }
+
+            if (is_array($array[$key])) {
+                $array[$key] = static::assignRecursive($array[$key], $parts, $value);
+            }
+            // maybe non-array
+        }
+
+        return $array;
+    }
+
+    /**
+     * @param  array  $array The array to populate
+     * @param  string $vDef  A period-separated string of nested array keys
+     * @param  mixed  $value The value to be assigned to the $vDef key
+     * @return array  The updated array
+     * @see https://github.com/sparc/phpWhois.org/compare/18849d1a98b992190612cdb2561e7b4492c505f5...8c6a18686775b25f05592dd67d7706e47167a498#diff-b8adbe1292f8abca1f943aa844db52aa Original fix by David Saez PAdros sparc
+     */
+    protected static function assign(array $array, string $vDef, $value): array
+    {
+        return static::assignRecursive($array, explode('.', $vDef), $value);
+    }
 }
