@@ -19,9 +19,11 @@
  * @copyright Copyright (c) 2020 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Tests\Handlers\gTLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
+use phpWhois\Handlers\gTLD\AfternicHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
  * @internal
@@ -30,7 +32,7 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 class AfternicHandlerTest extends AbstractHandler
 {
     /**
-     * @var \afternic_handler
+     * @var AfternicHandler
      */
     protected $handler;
 
@@ -42,7 +44,7 @@ class AfternicHandlerTest extends AbstractHandler
         self::markTestSkipped('Not sure what to do with this yet');
         parent::setUp();
 
-        $this->handler = new \afternic_handler();
+        $this->handler = new AfternicHandler();
         $this->handler->deepWhois = false;
     }
 

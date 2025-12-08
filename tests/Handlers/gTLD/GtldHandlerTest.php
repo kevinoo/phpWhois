@@ -19,9 +19,11 @@
  * @copyright Copyright (c) 2018 Joshua Smith
  */
 
-namespace Tests\Handlers;
+namespace Handlers\gTLD;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
+use phpWhois\Handlers\gTLD\GtldHandler;
+use Tests\Handlers\AbstractHandler;
 
 /**
  * GtldHandlerTest.
@@ -32,7 +34,7 @@ use DMS\PHPUnitExtensions\ArraySubset\Assert;
 class GtldHandlerTest extends AbstractHandler
 {
     /**
-     * @var \gtld_handler
+     * @var GtldHandler
      */
     protected $handler;
 
@@ -40,14 +42,11 @@ class GtldHandlerTest extends AbstractHandler
     {
         parent::setUp();
 
-        $this->handler = new \gtld_handler();
+        $this->handler = new GtldHandler();
         $this->handler->deepWhois = false;
     }
 
-    /**
-     * @test
-     */
-    public function parseGoogleDotCom()
+    public function testParseGoogleDotCom()
     {
         $query = 'google.com';
 
