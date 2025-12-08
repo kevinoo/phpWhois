@@ -40,7 +40,7 @@ Installation
 ### Via composer
 
 #### Stable version
-`composer require "kevinoo/phpwhois":"^6.3"`
+`composer require "kevinoo/phpwhois":"^6.4"`
 
 #### Latest development version
 `composer require "kevinoo/phpwhois":"dev-master"`
