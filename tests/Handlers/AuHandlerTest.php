@@ -7,7 +7,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\AuHandler;
+use phpWhois\Handlers\TLD\AuHandler;
 
 /**
  * AuHandlerTest

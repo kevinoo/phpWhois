@@ -21,7 +21,7 @@
 
 namespace Tests\Handlers;
 
-use phpWhois\Handlers\PhHandler;
+use phpWhois\Handlers\TLD\PhHandler;
 
 /**
  * PhHandlerTest

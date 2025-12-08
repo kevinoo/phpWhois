@@ -21,7 +21,7 @@
 
 namespace Tests\Handlers;
 
-use phpWhois\Handlers\TodayHandler;
+use phpWhois\Handlers\TLD\TodayHandler;
 
 /**
  * TodayHandlerTest

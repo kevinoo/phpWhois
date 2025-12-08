@@ -22,7 +22,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\NoHandler;
+use phpWhois\Handlers\TLD\NoHandler;
 
 /**
  * SeHandlerTest

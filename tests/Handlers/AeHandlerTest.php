@@ -22,7 +22,7 @@
 namespace Tests\Handlers;
 
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
-use phpWhois\Handlers\AeHandler;
+use phpWhois\Handlers\TLD\AeHandler;
 
 /**
  * AeHandlerTest
