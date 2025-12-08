@@ -49,14 +49,14 @@ class RoHandler extends AbstractHandler
         $reg = static::generic_parser_a($data_str['rawdata'], $translate, $contacts, 'domain', 'Ymd');
 
         if (isset($reg['domain']['description'])) {
-            $reg['owner'] = get_contact($reg['domain']['description'], $extra);
+            $reg['owner'] = static::getContact($reg['domain']['description'], $extra);
             unset($reg['domain']['description']);
 
             foreach ($reg as $key => $item) {
                 if (isset($item['address'])) {
                     $data = $item['address'];
                     unset($reg[$key]['address']);
-                    $reg[$key] = array_merge($reg[$key], get_contact($data, $extra));
+                    $reg[$key] = array_merge($reg[$key], static::getContact($data, $extra));
                 }
             }
 

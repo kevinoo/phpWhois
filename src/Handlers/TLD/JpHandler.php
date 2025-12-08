@@ -10,6 +10,7 @@
 
 namespace phpWhois\Handlers\TLD;
 
+use phpWhois\Handlers\AbstractHandler;
 use phpWhois\WhoisClient;
 
 class JpHandler extends WhoisClient
@@ -37,7 +38,7 @@ class JpHandler extends WhoisClient
         ];
 
         $r = [];
-        $r['regrinfo'] = generic_parser_b($data_str['rawdata'], $items, 'ymd');
+        $r['regrinfo'] = AbstractHandler::generic_parser_b($data_str['rawdata'], $items, 'ymd');
 
         $r['regyinfo'] = [
             'referrer' => 'http://www.jprs.jp',
@@ -66,7 +67,7 @@ class JpHandler extends WhoisClient
             $rwdata = $this->getRawData('CONTACT '.$r['regrinfo']['admin']['handle'].'/e');
             $r['rawdata'][] = '';
             $r['rawdata'] = array_merge($r['rawdata'], $rwdata);
-            $r['regrinfo']['admin'] = generic_parser_b($rwdata, $items, 'ymd', false);
+            $r['regrinfo']['admin'] = AbstractHandler::generic_parser_b($rwdata, $items, 'ymd', false);
             $r = $this->setWhoisInfo($r);
         }
 
@@ -82,7 +83,7 @@ class JpHandler extends WhoisClient
                 $rwdata = $this->getRawData('CONTACT '.$r['regrinfo']['tech']['handle'].'/e');
                 $r['rawdata'][] = '';
                 $r['rawdata'] = array_merge($r['rawdata'], $rwdata);
-                $r['regrinfo']['tech'] = generic_parser_b($rwdata, $items, 'ymd', false);
+                $r['regrinfo']['tech'] = AbstractHandler::generic_parser_b($rwdata, $items, 'ymd', false);
                 $r = $this->setWhoisInfo($r);
             }
         }
