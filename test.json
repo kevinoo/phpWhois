@@ -1,4 +1,5 @@
 {
+    "accountant": ["nsave.accountant"],
     "ae": ["google.ae","nic.ae","aeda.ae"],
     "ag": ["nic.ag"],
     "am": ["isoc.am"],
