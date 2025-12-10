@@ -11,17 +11,18 @@
 namespace phpWhois\Handlers\TLD;
 
 use phpWhois\Handlers\AbstractHandler;
+use phpWhois\Handlers\gTLD\IanaHandler;
 
 class IntHandler extends AbstractHandler
 {
     public function parse(array $data_str, string $query): array
     {
-        $iana = new \iana_handler();
-        $r = [];
-        $r['regrinfo'] = $iana->parse($data_str['rawdata'], $query);
-        $r['regyinfo']['referrer'] = 'http://www.iana.org/int-dom/int.htm';
-        $r['regyinfo']['registrar'] = 'Internet Assigned Numbers Authority';
-
-        return $r;
+        return [
+            'regrinfo' => (new IanaHandler())->parse($data_str['rawdata'], $query),
+            'regyinfo' => [
+                'referrer' => 'https://www.iana.org/domains/int',
+                'registrar' => 'Internet Assigned Numbers Authority',
+            ]
+        ];
     }
 }
