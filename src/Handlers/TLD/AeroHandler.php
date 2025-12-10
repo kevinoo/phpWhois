@@ -6,6 +6,7 @@
  * @copyright Maintained by David Saez
  * @copyright Copyright (c) 2014 Dmitry Lukashin
  * @copyright Copyright (c) 2020 Joshua Smith
+ * @copyright Copyright (c) 2025 Kevin Lucich
  */
 
 namespace phpWhois\Handlers\TLD;
@@ -16,15 +17,13 @@ class AeroHandler extends AbstractHandler
 {
     public function parse(array $data_str, string $query): array
     {
-        $r = [
+        return [
             'regrinfo' => static::generic_parser_b($data_str['rawdata'], [], 'ymd'),
             'regyinfo' => [
-                'referrer' => 'http://www.nic.aero',
+                'referrer' => 'https://information.aero/',
                 'registrar' => 'Societe Internationale de Telecommunications Aeronautiques SC',
             ],
             'rawdata' => $data_str['rawdata'],
         ];
-
-        return $r;
     }
 }
