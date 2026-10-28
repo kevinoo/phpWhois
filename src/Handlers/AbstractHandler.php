@@ -7,6 +7,10 @@
 
 namespace phpWhois\Handlers;
 
+use DateTime;
+use DateTimeZone;
+use UnexpectedValueException;
+
 /**
  * AbstractHandler.
  */
@@ -733,9 +737,11 @@ abstract class AbstractHandler implements HandlerInterface
      */
     public static function getDate($date, $format)
     {
-        $parsedDate = static::parseStandardDate($date);
-        if ($parsedDate instanceof \DateTime) {
+        try{
+            $parsedDate = static::parseStandardDate($date);
             return $parsedDate->format('Y-m-d');
+        }catch(UnexpectedValueException $exception){
+            // TODO: we need a logger
         }
 
         $months = [
@@ -844,12 +850,14 @@ abstract class AbstractHandler implements HandlerInterface
     }
 
     /**
-     * @return \DateTime|false
+     * @param string $date
+     * @throws UnexpectedValueException
+     * @return DateTime
      */
-    public static function parseStandardDate(string $date)
+    public static function parseStandardDate(string $date): DateTime
     {
         $date = trim($date);
-        $UTC = new \DateTimeZone('UTC');
+        $UTC = new DateTimeZone('UTC');
 
         // Must be an array with: "pattern" => "PHP DateTime Format"
         $rules = [
@@ -929,31 +937,27 @@ abstract class AbstractHandler implements HandlerInterface
                     continue;
                 }
 
-                $parsedDate = \DateTime::createFromFormat($dateTimeFormat, $date, $UTC);
-                if ($parsedDate instanceof \DateTime) {
+                $parsedDate = DateTime::createFromFormat($dateTimeFormat, $date, $UTC);
+                if ($parsedDate instanceof DateTime) {
                     return $parsedDate;
                 }
 
-                $parsedDate = \DateTime::createFromFormat($dateTimeFormat, $matches['datetime'] ?? $matches[0], $UTC);
-                if ($parsedDate instanceof \DateTime) {
+                $parsedDate = DateTime::createFromFormat($dateTimeFormat, $matches['datetime'] ?? $matches[0], $UTC);
+                if ($parsedDate instanceof DateTime) {
                     return $parsedDate;
                 }
 
                 if (!empty($matches[1])) {
                     // Fallback, try ignoring the TimeZone
-                    $parsedDate = \DateTime::createFromFormat('Y-m-d H:i:s', $matches[1], $UTC);
-                    if ($parsedDate instanceof \DateTime) {
+                    $parsedDate = DateTime::createFromFormat('Y-m-d H:i:s', $matches[1], $UTC);
+                    if ($parsedDate instanceof DateTime) {
                         return $parsedDate;
                     }
                 }
             }
         }
 
-        if (defined('DEBUG_MODE') && DEBUG_MODE) {
-            throw new \UnexpectedValueException("DateTime not parsable, value: \"{$date}\" ");
-        }
-
-        return false;
+        throw new UnexpectedValueException("DateTime not parsable, value: \"{$date}\" ");
     }
 
     /**

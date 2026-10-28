@@ -21,6 +21,7 @@
 
 namespace Tests\Handlers;
 
+use InvalidArgumentException;
 use Tests\BaseTestCase;
 
 /**
@@ -28,18 +29,9 @@ use Tests\BaseTestCase;
  */
 abstract class AbstractHandler extends BaseTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        if (!defined('DEBUG_MODE')) {
-            define('DEBUG_MODE', true);
-        }
-    }
-
     /**
      * @return string[]
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function loadFixture(string $which): array
     {
@@ -58,6 +50,6 @@ abstract class AbstractHandler extends BaseTestCase
             return explode("\n", $raw);
         }
 
-        throw new \InvalidArgumentException("Cannot find fixture `{$fixture}`");
+        throw new InvalidArgumentException("Cannot find fixture `{$fixture}`");
     }
 }
