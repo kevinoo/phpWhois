@@ -800,8 +800,9 @@ abstract class AbstractHandler implements HandlerInterface
         }
 
         $ok = false;
+        $guard = 0;
 
-        while (!$ok) {
+        while (!$ok && $guard++ < 10) {
             $ok = true;
 
             foreach ($res as $key => $val) {
@@ -817,7 +818,7 @@ abstract class AbstractHandler implements HandlerInterface
                     break;
                 }
 
-                if ($key !== 'y' && $key !== 'Y' && $val > 1900) {
+                if ($key !== 'y' && $key !== 'Y' && is_numeric($val) && $val > 1900) {
                     $res[$key] = $res['y'];
                     $res['y'] = $val;
                     $ok = false;
